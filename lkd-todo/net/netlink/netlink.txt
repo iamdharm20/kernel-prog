@@ -1,0 +1,6 @@
+1. Execute make first. This will result in a netlink_test.ko output among many others.
+2. Execute $ gcc netlink_app.c -o netlink_app
+3. Insert kernel module by :$ sudo insmod netlink_test.ko      
+4. Run ./netlink_app to see message and run dmesg to see debug messages
+5. Remove module by : $ sudo rmmod netlink_test          
+6. Finally make clean to remove output files.

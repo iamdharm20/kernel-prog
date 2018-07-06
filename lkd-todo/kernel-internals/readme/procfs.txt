@@ -1,0 +1,67 @@
+iBrief explanation of some of the notable entries:
+
+cmdline : Contains the command that originally started the process.
+
+cwd : a symbolic link to the current working directory of the process
+
+environ : This file contains variable information relating to the process
+
+exe : a symbolic link pointing to the original executable file
+
+fd :Is a directory that contains symbolic links for each open file descriptor:
+
+fdinfo : A directory that contains files that relate to each open file descriptor found in "/fd"
+
+maps : A file containing information about mapped files and blocks
+
+mem : A binary file that represents the processes virtual memory
+
+root : A symbolic link to the root path as seen by the process
+
+status : A file that contains information relating to the process regarding its current run state and memory usage
+
+task : This directory contains links to any tasks that have been started by this process
+
+Note:
+Many utilities and programs will read the information contained in many of below /proc/ directory structures 
+and report this back to your screen.
+
+Below is a list of some of most useful to know directories:
+
+/proc/fb : List of available frame buffers
+
+/proc/cpuinfo : Lists information about your systems CPU - Family, vendor information, Model number, Core Speeds and CPU flag information.
+
+/proc/devices : Contains a list of character and block devices
+
+/proc/diskstats : Lists information relating to Logical Disk Devices
+
+/proc/filesystems : List of filesystems that are supported by the kernel
+
+/proc/interrupts : Interrupt information can be found here
+
+/proc/iomem : Contains a map of the systems memory for each physical device
+
+/proc/ioports : Contains a list of currently registered port regions used for input or output communication with a device.
+
+/proc/irq : This directory contains directories that correspond to IRQs present on your system. SMP affinity information may be modified here.
+
+/proc/meminfo : Contains kernel memory information
+
+/proc/modules : Contains currently loaded modules within the kernel. "lsmod" command obtains its information from here
+
+/proc/mounts : Contains information regarding mounts. Filesystems in use and what mount options are in use are also listed
+
+/proc/net : Network stack information
+
+/proc/partitions : A list of the device numbers, their size and their /dev names which the kernel has identified as a partition
+
+/proc/slabinfo : Contains kernel slab statistics
+
+/proc/swaps : List of active swap partitions and their size
+
+/proc/sys : Dynamically configurable kernel options can be found here
+
+/proc/uptime : The amount of time in seconds the kernel has been running since boot time and spent in idle mode.
+
+/proc/version : Contains kernel information, version number, gcc version number used for building the kernel

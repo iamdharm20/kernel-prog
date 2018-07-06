@@ -1,0 +1,728 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>The Semester Project - VI: File System on Block Device | Introduction</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.6">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../Content/Part24.html" />
+    
+    
+    <link rel="prev" href="../Content/Part22.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="23"
+        data-chapter-title="The Semester Project - VI: File System on Block Device"
+        data-filepath="Content/Part23.md"
+        data-basepath=".."
+        data-revision="Thu Oct 27 2016 14:08:48 GMT+0300 (AST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Preface
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="Content/Part01.html">
+            
+                
+                    <a href="../Content/Part01.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Linux Device Drivers for Your Girl Friend
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="Content/Part02.html">
+            
+                
+                    <a href="../Content/Part02.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Writing Your First Linux Driver in the Classroom
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="Content/Part03.html">
+            
+                
+                    <a href="../Content/Part03.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Kernel C Extras in a Linux Driver
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="Content/Part04.html">
+            
+                
+                    <a href="../Content/Part04.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Linux Character Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="Content/Part05.html">
+            
+                
+                    <a href="../Content/Part05.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Character Device Files - Creation &amp; Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="Content/Part06.html">
+            
+                
+                    <a href="../Content/Part06.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        Decoding Character Device File Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="Content/Part07.html">
+            
+                
+                    <a href="../Content/Part07.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        Generic Hardware Access in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="Content/Part08.html">
+            
+                
+                    <a href="../Content/Part08.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        Accessing x86-Specific I/O-Mapped Hardware
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="Content/Part09.html">
+            
+                
+                    <a href="../Content/Part09.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        I/O Control in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="Content/Part10.html">
+            
+                
+                    <a href="../Content/Part10.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        Kernel-Space Debuggers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="Content/Part11.html">
+            
+                
+                    <a href="../Content/Part11.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        USB Drivers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="12" data-path="Content/Part12.html">
+            
+                
+                    <a href="../Content/Part12.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>12.</b>
+                        
+                        USB Drivers in Linux Continued
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="13" data-path="Content/Part13.html">
+            
+                
+                    <a href="../Content/Part13.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>13.</b>
+                        
+                        Data Transfer to and from USB Devices
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="14" data-path="Content/Part14.html">
+            
+                
+                    <a href="../Content/Part14.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>14.</b>
+                        
+                        A Dive Inside the Hard Disk for Understanding Partitions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="15" data-path="Content/Part15.html">
+            
+                
+                    <a href="../Content/Part15.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>15.</b>
+                        
+                        Disk on RAM: Playing with Block Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="16" data-path="Content/Part16.html">
+            
+                
+                    <a href="../Content/Part16.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>16.</b>
+                        
+                        Kernel Window - Peeping through /proc
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="17" data-path="Content/Part17.html">
+            
+                
+                    <a href="../Content/Part17.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>17.</b>
+                        
+                        Module Interactions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="18" data-path="Content/Part18.html">
+            
+                
+                    <a href="../Content/Part18.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>18.</b>
+                        
+                        File Systems - A Semester Project
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="19" data-path="Content/Part19.html">
+            
+                
+                    <a href="../Content/Part19.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>19.</b>
+                        
+                        File Systems: A Semester Project - II
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="20" data-path="Content/Part20.html">
+            
+                
+                    <a href="../Content/Part20.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>20.</b>
+                        
+                        The Semester Project: File Systems - III
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="21" data-path="Content/Part21.html">
+            
+                
+                    <a href="../Content/Part21.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>21.</b>
+                        
+                        The Semester Project - IV: FS Formatting a Pen Drive
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="22" data-path="Content/Part22.html">
+            
+                
+                    <a href="../Content/Part22.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>22.</b>
+                        
+                        The Semester Project - V: The File System Module Template
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="23" data-path="Content/Part23.html">
+            
+                
+                    <a href="../Content/Part23.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>23.</b>
+                        
+                        The Semester Project - VI: File System on Block Device
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="24" data-path="Content/Part24.html">
+            
+                
+                    <a href="../Content/Part24.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>24.</b>
+                        
+                        The Semester Project - VII: The File System in Action
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >Introduction</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="the-semester-project-&#x2013;-part-vi-file-system-on-block-device">The Semester Project &#x2013; Part VI: File System on Block Device</h1>
+<blockquote>
+<p>This twenty-third article, which is part of the series on Linux device drivers, enhances the previously written bare bone file system module, to connect with a real hardware partition.</p>
+</blockquote>
+<p>Since the last bare bone file system, the first thing which Pugs figured out was how to read from the underlying block device. Following is a typical way of doing it:</p>
+<pre><code class="lang-C"><span class="hljs-keyword">struct</span> buffer_head *bh;
+
+bh = sb_bread(sb, block); <span class="hljs-comment">/* sb is the struct super_block pointer */</span>
+<span class="hljs-comment">// bh-&gt;b_data contains the data</span>
+<span class="hljs-comment">// Once done, bh should be released using:</span>
+brelse(bh);
+</code></pre>
+<p>To do the above and various other real SFS (Simula File System) operations, Pugs&#x2019; felt a need to have his own handle to be a key parameter, which he added as follows (in previous real_sfs_ds.h):</p>
+<pre><code class="lang-C"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> sfs_info
+{
+    <span class="hljs-keyword">struct</span> super_block *vfs_sb; <span class="hljs-comment">/* Super block structure from VFS for this fs */</span>
+    <span class="hljs-keyword">sfs_super_block_t</span> sb; <span class="hljs-comment">/* Our fs super block */</span>
+    <span class="hljs-keyword">byte1_t</span> *used_blocks; <span class="hljs-comment">/* Used blocks tracker */</span>
+} <span class="hljs-keyword">sfs_info_t</span>;
+</code></pre>
+<p>The main idea behind this was to put all required static global variables in a single structure, and point that by the private data pointer of the file system, which is s_fs_info pointer in the struct super_block structure. With that, the key changes in the fill_super_block() (in previous real_sfs_bb.c file) becomes:</p>
+<ul>
+<li>Allocate the structure for the handle, using kzalloc()</li>
+<li>Initialize the structure for the handle (through init_browsing())</li>
+<li>Read the physical super block, verify and translate info from it into the VFS super block (through init_browsing())</li>
+<li>Point it by s_fs_info (through init_browsing())</li>
+<li>Update the VFS super block, accordingly.</li>
+</ul>
+<p>Accordingly, the error handling code would need to do the <code>shut_browsing(info)</code> and <code>kfree(info)</code>. And, that would additionally also need to go along with the function corresponding to the kill_sb function pointer, defined in the previous <code>real_sfs_bb.c</code> by <code>kill_block_super</code>, called during <code>umount</code>.</p>
+<p>Here&#x2019;s the various code pieces:</p>
+<pre><code class="lang-C"><span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/slab.h&gt;</span> /* For kzalloc, ... */</span>
+...
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">sfs_fill_super</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> super_block *sb, <span class="hljs-keyword">void</span> *data, <span class="hljs-keyword">int</span> silent)</span>
+</span>{
+    <span class="hljs-keyword">sfs_info_t</span> *info;
+
+    <span class="hljs-keyword">if</span> (!(info = (<span class="hljs-keyword">sfs_info_t</span> *)(kzalloc(<span class="hljs-keyword">sizeof</span>(<span class="hljs-keyword">sfs_info_t</span>), GFP_KERNEL))))
+        <span class="hljs-keyword">return</span> -ENOMEM;
+    info-&gt;vfs_sb = sb;
+    <span class="hljs-keyword">if</span> (init_browsing(info) &lt; <span class="hljs-number">0</span>)
+    {
+        kfree(info);
+        <span class="hljs-keyword">return</span> -EIO;
+    }
+    <span class="hljs-comment">/* Updating the VFS super_block */</span>
+    sb-&gt;s_magic = info-&gt;sb.type;
+    sb-&gt;s_blocksize = info-&gt;sb.block_size;
+    sb-&gt;s_blocksize_bits = get_bit_pos(info-&gt;sb.block_size);
+
+    ...
+}
+
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title">sfs_kill_sb</span><span class="hljs-params">(<span class="hljs-keyword">struct</span> super_block *sb)</span>
+</span>{
+    <span class="hljs-keyword">sfs_info_t</span> *info = (<span class="hljs-keyword">sfs_info_t</span> *)(sb-&gt;s_fs_info);
+
+    kill_block_super(sb);
+    <span class="hljs-keyword">if</span> (info)
+    {
+        shut_browsing(info);
+        kfree(info);
+    }
+}
+</code></pre>
+<p><code>kzalloc()</code> in contrast to <code>kmalloc()</code>, also zeroes out the allocated location. <code>get_bit_pos()</code> is a simple Pugs&#x2019; way to compute logarithm base 2, as follows:</p>
+<pre><code class="lang-C"><span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">get_bit_pos</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">int</span> val)</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; val; i++)
+    {
+        val &gt;&gt;= <span class="hljs-number">1</span>;
+    }
+    <span class="hljs-keyword">return</span> (i - <span class="hljs-number">1</span>);
+}
+</code></pre>
+<p>And <code>init_browsing()</code>, <code>shut_browsing()</code> are basically the transformations of the earlier user-space functions of <code>browse_real_sfs.c</code> into kernel-space code <code>real_sfs_ops.c</code>, prototyped in <code>real_sfs_ops.h</code>. This basically involves the following transformations:</p>
+<ul>
+<li>&#x201C;int sfs_handle&#x201D; into &#x201C;sfs_info_t *info&#x201C;</li>
+<li><code>lseek()</code> &amp; <code>read()</code> into the read from the block device using <code>sb_bread()</code></li>
+<li><code>calloc()</code> into <code>vmalloc()</code> &amp; then appropriate initialization by zeros.</li>
+<li><code>free()</code> into <code>vfree()</code></li>
+</ul>
+<p>Here&#x2019;s the transformed <code>init_browsing()</code> and <code>shut_browsing()</code> in <code>real_sfs_ops.c</code>:</p>
+<pre><code class="lang-C">#include &lt;linux/fs.h&gt; /* For struct super_block */
+#include &lt;linux/errno.h&gt; /* For error codes */
+#include &lt;linux/vmalloc.h&gt; /* For vmalloc, ... */
+
+#include &quot;real_sfs_ds.h&quot;
+#include &quot;real_sfs_ops.h&quot;
+
+int init_browsing(sfs_info_t *info)
+{
+    byte1_t *used_blocks;
+    int i, j;
+    sfs_file_entry_t fe;
+    int retval;
+
+    if ((retval = read_sb_from_real_sfs(info, &amp;info-&gt;sb)) &lt; 0)
+    {
+        return retval;
+    }
+    if (info-&gt;sb.type != SIMULA_FS_TYPE)
+    {
+        printk(KERN_ERR &quot;Invalid SFS detected. Giving up.\n&quot;);
+        return -EINVAL;
+    }
+
+    /* Mark used blocks */
+    used_blocks = (byte1_t *)(vmalloc(info-&gt;sb.partition_size));
+    if (!used_blocks)
+    {
+        return -ENOMEM;
+    }
+    for (i = 0; i &lt; info-&gt;sb.data_block_start; i++)
+    {
+        used_blocks[i] = 1;
+    }
+    for (; i &lt; info-&gt;sb.partition_size; i++)
+    {
+        used_blocks[i] = 0;
+    }
+
+    for (i = 0; i &lt; info-&gt;sb.entry_count; i++)
+    {
+        if ((retval = read_from_real_sfs(info,
+                    info-&gt;sb.entry_table_block_start,
+                    i * sizeof(sfs_file_entry_t),
+                    &amp;fe, sizeof(sfs_file_entry_t))) &lt; 0)
+        {
+            vfree(used_blocks);
+            return retval;
+        }
+        if (!fe.name[0]) continue;
+        for (j = 0; j &lt; SIMULA_FS_DATA_BLOCK_CNT; j++)
+        {
+            if (fe.blocks[j] == 0) break;
+            used_blocks[fe.blocks[j]] = 1;
+        }
+    }
+
+    info-&gt;used_blocks = used_blocks;
+    info-&gt;vfs_sb-&gt;s_fs_info = info;
+    return 0;
+}
+void shut_browsing(sfs_info_t *info)
+{
+    if (info-&gt;used_blocks)
+        vfree(info-&gt;used_blocks);
+}
+</code></pre>
+<p>Similarly, all other functions in <code>browse_real_sfs.c</code> would also have to be transformed, one by one. Also, note the read from the underlying block device is being captured by the two functions, namely <code>read_sb_from_real_sfs()</code> and <code>read_from_real_sfs()</code>, which are coded as follows:</p>
+<pre><code class="lang-C"><span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/buffer_head.h&gt;</span> /* struct buffer_head, sb_bread, ... */</span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/string.h&gt;</span> /* For memcpy */</span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;real_sfs_ds.h&quot;</span></span>
+
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">read_sb_from_real_sfs</span><span class="hljs-params">(sfs_info_t *info, sfs_super_block_t *sb)</span>
+</span>{
+    <span class="hljs-keyword">struct</span> buffer_head *bh;
+
+    <span class="hljs-keyword">if</span> (!(bh = sb_bread(info-&gt;vfs_sb, <span class="hljs-number">0</span> <span class="hljs-comment">/* Super block is the 0th block */</span>)))
+    {
+        <span class="hljs-keyword">return</span> -EIO;
+    }
+    <span class="hljs-built_in">memcpy</span>(sb, bh-&gt;b_data, SIMULA_FS_BLOCK_SIZE);
+    brelse(bh);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+<span class="hljs-function"><span class="hljs-keyword">static</span> <span class="hljs-keyword">int</span> <span class="hljs-title">read_from_real_sfs</span><span class="hljs-params">(sfs_info_t *info, byte4_t block,
+                byte4_t offset, <span class="hljs-keyword">void</span> *buf, byte4_t len)</span>
+</span>{
+    <span class="hljs-keyword">byte4_t</span> block_size = info-&gt;sb.block_size;
+    <span class="hljs-keyword">byte4_t</span> bd_block_size = info-&gt;vfs_sb-&gt;s_bdev-&gt;bd_block_size;
+    <span class="hljs-keyword">byte4_t</span> <span class="hljs-built_in">abs</span>;
+    <span class="hljs-keyword">struct</span> buffer_head *bh;
+
+    <span class="hljs-comment">/*
+     * Translating the real SFS block numbering to underlying block device
+     * block numbering, for sb_bread()
+     */</span>
+    <span class="hljs-built_in">abs</span> = block * block_size + offset;
+    block = <span class="hljs-built_in">abs</span> / bd_block_size;
+    offset = <span class="hljs-built_in">abs</span> % bd_block_size;
+    <span class="hljs-keyword">if</span> (offset + len &gt; bd_block_size) <span class="hljs-comment">// Should never happen</span>
+    {
+        <span class="hljs-keyword">return</span> -EINVAL;
+    }
+    <span class="hljs-keyword">if</span> (!(bh = sb_bread(info-&gt;vfs_sb, block)))
+    {
+        <span class="hljs-keyword">return</span> -EIO;
+    }
+    <span class="hljs-built_in">memcpy</span>(buf, bh-&gt;b_data + offset, len);
+    brelse(bh);
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+</code></pre>
+<p>All the above code pieces put in together as the real_sfs_minimal.c (based on the file real_sfs_bb.c created earlier), real_sfs_ops.c, real_sfs_ds.h (based on the same file created earlier), real_sfs_ops.h, and a supporting Makefile, along with the previously created format_real_sfs.c application are available from <a href="http://sysplay.in/blog/code/rsfs_on_block_device_code.tbz2" target="_blank">rsfs_on_block_device_code.tbz2</a>.</p>
+<h2 id="real-sfs-on-block-device">Real SFS on block device</h2>
+<p>Once compiled using make, getting the <code>real_sfs_first.ko</code> driver, Pugs didn&#x2019;t expect it to be way different from the previous <code>real_sfs_bb.ko</code> driver, but at least now it should be reading and verifying the underlying partition. And for that he first tried mounting the usual partition of a pen drive to get an &#x201C;Invalid SFS detected&#x201D; message in dmesg output; and then after formatting it. Note the same error of &#x201C;Not a directory&#x201D;, etc as in previous article, still existing &#x2013; as anyways it is still very similar to the previous bare bone driver &#x2013; the core functionalities yet to be implemented &#x2013; just that it is now on a real block device partition. Figure 39 shows the exact commands for all these steps.</p>
+<p><img src="../Images/Part23/figure_39_sfs_module_interacting_with_the_pen_drive_partition-1024x549.png" alt="Figure 39"></p>
+<p><strong>Note: &#x201C;./format_real_sfs&#x201D; and &#x201C;mount&#x201D; commands may take lot of time (may be in minutes), depending on the partition size. So, preferably use a partition, say less than 1MB.</strong></p>
+<p>With this important step of getting the file system module interacting with the underlying block device, the last step for Pugs would be to do the other transformations from <code>browse_real_sfs.c</code> and accordingly use them in the SFS module.</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../Content/Part22.html" class="navigation navigation-prev " aria-label="Previous page: The Semester Project - V: The File System Module Template"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../Content/Part24.html" class="navigation navigation-next " aria-label="Next page: The Semester Project - VII: The File System in Action"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

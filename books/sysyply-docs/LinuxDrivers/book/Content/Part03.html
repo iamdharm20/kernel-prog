@@ -1,0 +1,558 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Kernel C Extras in a Linux Driver | Introduction</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.6">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../Content/Part04.html" />
+    
+    
+    <link rel="prev" href="../Content/Part02.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="3"
+        data-chapter-title="Kernel C Extras in a Linux Driver"
+        data-filepath="Content/Part03.md"
+        data-basepath=".."
+        data-revision="Thu Oct 27 2016 14:08:48 GMT+0300 (AST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Preface
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="Content/Part01.html">
+            
+                
+                    <a href="../Content/Part01.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Linux Device Drivers for Your Girl Friend
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="Content/Part02.html">
+            
+                
+                    <a href="../Content/Part02.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Writing Your First Linux Driver in the Classroom
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="3" data-path="Content/Part03.html">
+            
+                
+                    <a href="../Content/Part03.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Kernel C Extras in a Linux Driver
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="Content/Part04.html">
+            
+                
+                    <a href="../Content/Part04.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Linux Character Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="Content/Part05.html">
+            
+                
+                    <a href="../Content/Part05.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Character Device Files - Creation &amp; Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="Content/Part06.html">
+            
+                
+                    <a href="../Content/Part06.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        Decoding Character Device File Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="Content/Part07.html">
+            
+                
+                    <a href="../Content/Part07.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        Generic Hardware Access in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="8" data-path="Content/Part08.html">
+            
+                
+                    <a href="../Content/Part08.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        Accessing x86-Specific I/O-Mapped Hardware
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="Content/Part09.html">
+            
+                
+                    <a href="../Content/Part09.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        I/O Control in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="Content/Part10.html">
+            
+                
+                    <a href="../Content/Part10.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        Kernel-Space Debuggers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="Content/Part11.html">
+            
+                
+                    <a href="../Content/Part11.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        USB Drivers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="12" data-path="Content/Part12.html">
+            
+                
+                    <a href="../Content/Part12.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>12.</b>
+                        
+                        USB Drivers in Linux Continued
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="13" data-path="Content/Part13.html">
+            
+                
+                    <a href="../Content/Part13.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>13.</b>
+                        
+                        Data Transfer to and from USB Devices
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="14" data-path="Content/Part14.html">
+            
+                
+                    <a href="../Content/Part14.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>14.</b>
+                        
+                        A Dive Inside the Hard Disk for Understanding Partitions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="15" data-path="Content/Part15.html">
+            
+                
+                    <a href="../Content/Part15.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>15.</b>
+                        
+                        Disk on RAM: Playing with Block Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="16" data-path="Content/Part16.html">
+            
+                
+                    <a href="../Content/Part16.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>16.</b>
+                        
+                        Kernel Window - Peeping through /proc
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="17" data-path="Content/Part17.html">
+            
+                
+                    <a href="../Content/Part17.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>17.</b>
+                        
+                        Module Interactions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="18" data-path="Content/Part18.html">
+            
+                
+                    <a href="../Content/Part18.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>18.</b>
+                        
+                        File Systems - A Semester Project
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="19" data-path="Content/Part19.html">
+            
+                
+                    <a href="../Content/Part19.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>19.</b>
+                        
+                        File Systems: A Semester Project - II
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="20" data-path="Content/Part20.html">
+            
+                
+                    <a href="../Content/Part20.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>20.</b>
+                        
+                        The Semester Project: File Systems - III
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="21" data-path="Content/Part21.html">
+            
+                
+                    <a href="../Content/Part21.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>21.</b>
+                        
+                        The Semester Project - IV: FS Formatting a Pen Drive
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="22" data-path="Content/Part22.html">
+            
+                
+                    <a href="../Content/Part22.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>22.</b>
+                        
+                        The Semester Project - V: The File System Module Template
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="23" data-path="Content/Part23.html">
+            
+                
+                    <a href="../Content/Part23.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>23.</b>
+                        
+                        The Semester Project - VI: File System on Block Device
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="24" data-path="Content/Part24.html">
+            
+                
+                    <a href="../Content/Part24.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>24.</b>
+                        
+                        The Semester Project - VII: The File System in Action
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >Introduction</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="kernel-c-extras-in-a-linux-driver">Kernel C Extras in a Linux Driver</h1>
+<blockquote>
+<p>This third article, in the series on Linux device drivers deals with the kernel&#x2019;s message logging,
+and kernel-specific GCC extensions.</p>
+</blockquote>
+<p>Enthused by how Pugs impressed professor Gopi, in the last class, Shweta decided to do something similar. And there was already an opportunity &#x2013; finding out where has the output of printk gone. So, as soon as she entered the lab, she got hold of the best located system, logged into it, and took charge. Knowing her professor pretty well, she knew that there would be a hint for the finding, from the class itself. So, she flashed back what all the professor taught, and suddenly remembered the error output demonstration from <code>insmod vfat.ko</code> &#x2013; <code>dmesg | tail</code>. She immediately tried that and for sure found out the printk output, there. But how did it come here? A tap on her shoulder brought her out of the thought. &quot;Shall we go for a coffee?&quot;, proposed Pugs. &quot;But I need to &#x2026;&quot;. &quot;I know what you are thinking about.&quot;, interrupted Pugs. &quot;Let&apos;s go, yaar. I&#x2019;ll explain you all about <code>dmesg</code>&quot;.</p>
+<h2 id="kernel-message-logging">Kernel Message Logging</h2>
+<p>On the coffee table, Pugs began:
+As far as parameters are concerned, printf &amp; printk are same, except that when programming for the kernel we don&#x2019;t bother about the float formats of %f, %lf &amp; their likes. However unlike printf, printk is not destined to dump its output on some console. In fact, it cannot do so, as it is something which is in the background, and executes like a library, only when triggered either from the hardware space or the user space. So, then where does <code>printk</code> print? All the <code>printk</code> calls, just put their contents into the (log) ring buffer of the kernel. Then, the syslog daemon running in the user space picks them for final processing &amp; redirection to various devices, as configured in its configuration file <code>/etc/syslog.conf</code>.</p>
+<p>You must have observed the out of place macro KERN_INFO, in the printk calls, in the previous article. That actually is a constant string, which gets concatenated with the format string after it, making it a single string. Note that there is no comma (,) between them &#x2013; they are no two separate arguments. There are eight such macros defined in <code>&lt;linux/kernel.h&gt;</code> under the kernel source, namely:</p>
+<pre><code class="lang-C"><span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_EMERG    <span class="hljs-string">&quot;&lt;0&gt;&quot;</span> <span class="hljs-comment">/* system is unusable            */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_ALERT    <span class="hljs-string">&quot;&lt;1&gt;&quot;</span> <span class="hljs-comment">/* action must be taken immediately    */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_CRIT    <span class="hljs-string">&quot;&lt;2&gt;&quot;</span> <span class="hljs-comment">/* critical conditions            */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_ERR    <span class="hljs-string">&quot;&lt;3&gt;&quot;</span> <span class="hljs-comment">/* error conditions            */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_WARNING    <span class="hljs-string">&quot;&lt;4&gt;&quot;</span> <span class="hljs-comment">/* warning conditions            */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_NOTICE    <span class="hljs-string">&quot;&lt;5&gt;&quot;</span> <span class="hljs-comment">/* normal but significant condition    */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_INFO    <span class="hljs-string">&quot;&lt;6&gt;&quot;</span> <span class="hljs-comment">/* informational                */</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> KERN_DEBUG    <span class="hljs-string">&quot;&lt;7&gt;&quot;</span> <span class="hljs-comment">/* debug-level messages            */</span></span>
+</code></pre>
+<p>Depending on these log levels (i.e. the first 3 characters in the format string), the syslog daemon in the user space redirects the corresponding messages to their configured locations &#x2013; a typical one being the log file <code>/var/log/messages</code> for all the log levels. Hence, all the <code>printk</code> outputs are by default in that file. Though, they can be configured differently to say serial port <code>(/dev/ttyS0)</code> or say all consoles, like what happens typically for <code>KERN_EMERG</code>. Now, <code>/var/log/messages</code> is buffered &amp; contain messages not only from the kernel but also from various daemons running in the user space. Moreover, the <code>/var/log/messages</code> most often is not readable by a normal user, and hence a user-space utility <code>dmesg</code> is provided to directly parse the kernel ring buffer and dump it on the standard output. Figure 6 shows the snippets from the two.</p>
+<p><img src="../Images/Part3/figure_6_kernels_message_logging.png" alt="Figure 6"></p>
+<h2 id="kernelspecific-gcc-extensions">Kernel-specific GCC extensions</h2>
+<p>With all these Shweta got frustrated, as she wanted to find all these by her own, and then do a impression in the next class &#x2013; but all flop. Pissed off, she said, &#x201C;So as you have explained all about printing in kernel, why don&#x2019;t you tell about the weird C in the driver as well &#x2013; the special keywords <code>__init</code>, <code>__exit</code>, etc.&#x201D;</p>
+<p>These are not any special keywords. Kernel C is not any weird C but just the standard C with some additional extensions from the C compiler <code>gcc</code>. Macros <code>__init</code> and <code>__exit</code> are just two of these extensions. However, these do not have any relevance in case we are using them for dynamically loadable driver, but only when the same code gets built into the kernel. All the functions marked with <code>__init</code> get placed inside the init section of the kernel image and all functions marked with <code>__exit</code> are placed inside the exit section of the kernel image, automatically by gcc, during kernel compilation. What is the benefit? All functions with <code>__init</code> are supposed to be executed only once during boot-up, till the next boot-up. So, once they are executed during boot-up, kernel frees up RAM by removing them by freeing up the init section. Similarly, all functions in exit section are supposed to be called during system shutdown. Now, if system is shutting down anyway, why do you need to do any cleanups. Hence, the exit section is not even built into the kernel &#x2013; another cool optimization.</p>
+<p>This is a beautiful example of how kernel &amp; gcc goes hand-in-hand to achieve lot of optimizations and many other tricks &#x2013; we could see others, as we go along. And that is why Linux kernel can be compiled only using gcc-based compilers &#x2013; a close knit bond.</p>
+<h2 id="kernel-functions-return-guidelines">Kernel function&#x2019;s return guidelines</h2>
+<p>While returning from coffee, Pugs started all praises for the OSS &amp; its community. Do you know why different individuals are able to come together and contribute excellently without any conflicts &#x2013; moreover in a project as huge as Linux? There are many reasons. But definitely, one of the strong reasons is, following &amp; abiding by the inherent coding guidelines. Take for example the guideline for returning values from a function in kernel programming.</p>
+<p>Any kernel function needing error handling, typically returns an integer-like type and the return value again follows a guideline. For an error, we return a negative number &#x2013; a minus sign appended with a macro included through the kernel header <code>&lt;linux/errno.h&gt;</code>, that includes the various error number headers under the kernel sources, namely <code>&lt;asm/errno.h&gt;</code>, <code>&lt;asm-generic/errno.h&gt;</code>, <code>&lt;asm-generic/errno-base.h&gt;</code>. For success, zero is the most common return value, unless there is some additional information to be provided. In that case, a positive value is returned, the value indicating the information like number of bytes transferred.</p>
+<h2 id="kernel-c--pure-c">Kernel C = Pure C</h2>
+<p>Once back into the lab, Shweta remembered their professor mentioning that no /usr/include headers can be used for kernel programming. But Pugs said that kernel C is just standard C with some gcc extensions. Why this conflict? Actually this is not a conflict. Standard C is just pure C &#x2013; just the language. The headers are not part of it. Those are part of the standard libraries built in C for C programmers, based on the concept of re-using code. Does that mean, all standard libraries and hence all ANSI standard functions are not part of &#x2018;pure&#x2019; C? Yes. Then, hadn&#x2019;t it been really tough coding the kernel. Not for this reason. In reality, kernel developers have developed their own needed set of functions, and they are all part of the kernel code. printk is just one of them. Similarly, many string functions, memory functions, &#x2026; are all part of the kernel source under various directories like kernel, ipc, lib, &#x2026; and the corresponding headers under include/linux directory.</p>
+<p>&#x201C;O ya! That is why we need to have kernel source for building a driver&#x201D;, affirmed Shweta. &#x201C;If not the complete source, at least the headers are a must. And that is why we have separate packages to install complete kernel source or just the kernel headers&#x201D;, added Pugs. &#x201C;In the lab, all the sources are setup. But if I want to try out drivers on my Linux system at my hostel room, how do I go about it?&#x201D; asked Shweta. &#x201C;Our lab have Fedora, where the kernel sources typically get installed under <code>/usr/src/kernels/&lt;kernel_version&gt;</code> unlike the standard place <code>/usr/src/linux</code>. Lab administrators must have installed it using command line <code>yum install kernel-devel</code>. I use Mandriva and installed the kernel sources using <code>urpmi kernel-source</code>, replied Pugs. <code>but, I have Ubuntu</code>. &quot;Okay!! For that just use <code>apt-get install</code> &#x2013; possibly, <code>apt-get install linux-source</code>&quot;.</p>
+<h2 id="summing-up">Summing up</h2>
+<p>Lab timings were just getting over. Suddenly, Shweta put out her curiosity &#x2013; &quot;Hey Pugs! What is the next topic we are going to learn in our Linux device drivers class?&quot;. &quot;Hmmm!! Most probably character drivers&quot;. With this information, Shweta hurriedly packed up her bag &amp; headed towards her room to setup the kernel sources and try out the next driver on her own. &quot;In case you are stuck up, just give me a call. I&#x2019;ll be there&quot;, called up Pugs from the behind with a smile.</p>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../Content/Part02.html" class="navigation navigation-prev " aria-label="Previous page: Writing Your First Linux Driver in the Classroom"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../Content/Part04.html" class="navigation navigation-next " aria-label="Next page: Linux Character Drivers"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

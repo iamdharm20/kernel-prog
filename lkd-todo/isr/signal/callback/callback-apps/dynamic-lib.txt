@@ -1,0 +1,52 @@
+Callback functions can also be used to create a library that will be called from an upper-layer program, 
+and in turn, the library will call user-defined code on the occurrence of some event.
+
+compiler stages:
+	gcc -E <file>.c                         Preprocessor, but don't compile
+	gcc -S                                  Compile but don't assemble
+	gcc -c  <file>.c                        assemble but don't link
+	gcc -o <executable>.out <file>.c        link your object files and generate the executable
+
+	gcc -E -o linking_error.I linking_error.c
+	gcc -S -o linking_error.s linking_error.c
+	gcc -c linking_error.c
+	gcc -o linking_error.out -c linking_error.c
+
+#compile without shared library
+	1. gcc -Wall -o callback callback.c reg_callback.c 
+	2. ./callback
+
+#create shared library:
+
+	#Compiling with Position Independent Code
+	1. gcc -Wall -fpic -c reg_callback.c
+
+	#Creating a shared library from an object file
+	2. gcc -shared -o libcallback.so.1.0 *.o
+
+	#Linking with a shared library
+	3. gcc -Wall -L . callback.c -l:libcallback.so.1.0 -o callback.out
+
+	Note:
+	gcc -Wall -I/sourcepath/ -L/opt/lib sourcefile -llibrary -o outputfile
+	-I sourcespath.
+	-l heymath which tells the linker to link the object files contained in lib<library>.a
+	-L option tells the linker to search path for libraries
+
+	#run the binary
+	4. ./callbak.out
+
+	#Making the library available at runtime
+	#export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/path/to/lib
+	#gcc -shared -Wl,-soname,libcallback.so.1 -o libcallback.so.1.0 *.o
+
+	compiler options:
+
+	 -Wall: include warnings. See man page for warnings specified.
+	 -fPIC: Compiler directive to output position independent code, a characteristic required by shared libraries.
+	 -shared: Produce a shared object which can then be linked with other objects to form an executable.
+	 -Wl,options: Pass options to linker.
+
+Helpfull debuging tools:
+
+	ldd, nm, ldconfig, objdump, readelf, addr2line

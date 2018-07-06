@@ -1,0 +1,633 @@
+<!DOCTYPE HTML>
+<html lang="en" >
+    
+    <head>
+        
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>Accessing x86-Specific I/O-Mapped Hardware | Introduction</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 2.6.6">
+        
+        
+        <meta name="HandheldFriendly" content="true"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+        <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+        
+    <link rel="stylesheet" href="../gitbook/style.css">
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-highlight/website.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-search/search.css">
+        
+    
+        
+        <link rel="stylesheet" href="../gitbook/plugins/gitbook-plugin-fontsettings/website.css">
+        
+    
+    
+
+        
+    
+    
+    <link rel="next" href="../Content/Part09.html" />
+    
+    
+    <link rel="prev" href="../Content/Part07.html" />
+    
+
+        
+    </head>
+    <body>
+        
+        
+    <div class="book"
+        data-level="8"
+        data-chapter-title="Accessing x86-Specific I/O-Mapped Hardware"
+        data-filepath="Content/Part08.md"
+        data-basepath=".."
+        data-revision="Thu Oct 27 2016 14:08:48 GMT+0300 (AST)"
+        data-innerlanguage="">
+    
+
+<div class="book-summary">
+    <nav role="navigation">
+        <ul class="summary">
+            
+            
+            
+            
+
+            
+
+            
+    
+        <li class="chapter " data-level="0" data-path="index.html">
+            
+                
+                    <a href="../index.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                        Preface
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="1" data-path="Content/Part01.html">
+            
+                
+                    <a href="../Content/Part01.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>1.</b>
+                        
+                        Linux Device Drivers for Your Girl Friend
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="2" data-path="Content/Part02.html">
+            
+                
+                    <a href="../Content/Part02.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>2.</b>
+                        
+                        Writing Your First Linux Driver in the Classroom
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="3" data-path="Content/Part03.html">
+            
+                
+                    <a href="../Content/Part03.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>3.</b>
+                        
+                        Kernel C Extras in a Linux Driver
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="4" data-path="Content/Part04.html">
+            
+                
+                    <a href="../Content/Part04.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>4.</b>
+                        
+                        Linux Character Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="5" data-path="Content/Part05.html">
+            
+                
+                    <a href="../Content/Part05.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>5.</b>
+                        
+                        Character Device Files - Creation &amp; Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="6" data-path="Content/Part06.html">
+            
+                
+                    <a href="../Content/Part06.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>6.</b>
+                        
+                        Decoding Character Device File Operations
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="7" data-path="Content/Part07.html">
+            
+                
+                    <a href="../Content/Part07.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>7.</b>
+                        
+                        Generic Hardware Access in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter active" data-level="8" data-path="Content/Part08.html">
+            
+                
+                    <a href="../Content/Part08.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>8.</b>
+                        
+                        Accessing x86-Specific I/O-Mapped Hardware
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="9" data-path="Content/Part09.html">
+            
+                
+                    <a href="../Content/Part09.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>9.</b>
+                        
+                        I/O Control in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="10" data-path="Content/Part10.html">
+            
+                
+                    <a href="../Content/Part10.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>10.</b>
+                        
+                        Kernel-Space Debuggers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="11" data-path="Content/Part11.html">
+            
+                
+                    <a href="../Content/Part11.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>11.</b>
+                        
+                        USB Drivers in Linux
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="12" data-path="Content/Part12.html">
+            
+                
+                    <a href="../Content/Part12.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>12.</b>
+                        
+                        USB Drivers in Linux Continued
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="13" data-path="Content/Part13.html">
+            
+                
+                    <a href="../Content/Part13.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>13.</b>
+                        
+                        Data Transfer to and from USB Devices
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="14" data-path="Content/Part14.html">
+            
+                
+                    <a href="../Content/Part14.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>14.</b>
+                        
+                        A Dive Inside the Hard Disk for Understanding Partitions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="15" data-path="Content/Part15.html">
+            
+                
+                    <a href="../Content/Part15.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>15.</b>
+                        
+                        Disk on RAM: Playing with Block Drivers
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="16" data-path="Content/Part16.html">
+            
+                
+                    <a href="../Content/Part16.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>16.</b>
+                        
+                        Kernel Window - Peeping through /proc
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="17" data-path="Content/Part17.html">
+            
+                
+                    <a href="../Content/Part17.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>17.</b>
+                        
+                        Module Interactions
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="18" data-path="Content/Part18.html">
+            
+                
+                    <a href="../Content/Part18.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>18.</b>
+                        
+                        File Systems - A Semester Project
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="19" data-path="Content/Part19.html">
+            
+                
+                    <a href="../Content/Part19.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>19.</b>
+                        
+                        File Systems: A Semester Project - II
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="20" data-path="Content/Part20.html">
+            
+                
+                    <a href="../Content/Part20.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>20.</b>
+                        
+                        The Semester Project: File Systems - III
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="21" data-path="Content/Part21.html">
+            
+                
+                    <a href="../Content/Part21.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>21.</b>
+                        
+                        The Semester Project - IV: FS Formatting a Pen Drive
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="22" data-path="Content/Part22.html">
+            
+                
+                    <a href="../Content/Part22.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>22.</b>
+                        
+                        The Semester Project - V: The File System Module Template
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="23" data-path="Content/Part23.html">
+            
+                
+                    <a href="../Content/Part23.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>23.</b>
+                        
+                        The Semester Project - VI: File System on Block Device
+                    </a>
+            
+            
+        </li>
+    
+        <li class="chapter " data-level="24" data-path="Content/Part24.html">
+            
+                
+                    <a href="../Content/Part24.html">
+                
+                        <i class="fa fa-check"></i>
+                        
+                            <b>24.</b>
+                        
+                        The Semester Project - VII: The File System in Action
+                    </a>
+            
+            
+        </li>
+    
+
+
+            
+            <li class="divider"></li>
+            <li>
+                <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+                    Published with GitBook
+                </a>
+            </li>
+            
+        </ul>
+    </nav>
+</div>
+
+    <div class="book-body">
+        <div class="body-inner">
+            <div class="book-header" role="navigation">
+    <!-- Actions Left -->
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../" >Introduction</a>
+    </h1>
+</div>
+
+            <div class="page-wrapper" tabindex="-1" role="main">
+                <div class="page-inner">
+                
+                
+                    <section class="normal" id="section-">
+                    
+                        <h1 id="accessing-x86specific-io-mapped-hardware-in-linux">Accessing x86-specific I/O mapped hardware in Linux</h1>
+<blockquote>
+<p>This eighth article, which is part of the series on Linux device drivers, continues on talking about accessing hardware in Linux.</p>
+</blockquote>
+<p>Second day in the Linux device drivers laboratory was expected to be quite different from the typical software oriented classes. Apart from accessing &amp; programming the architecture-specific I/O mapped hardware in x86, it had lot to offer for first timers in reading hardware device manuals (commonly referred as data-sheets) and to understand them for writing device drivers.</p>
+<p>Contrast this with the previous laboratory session, which taught about the generic architecture-transparent hardware interfacing. It was all about mapping and accessing memory-mapped devices in Linux, without any device specific detail.</p>
+<h2 id="x86specific-hardware-interfacing">x86-specific hardware interfacing</h2>
+<p>Unlike most other architectures, x86 has an additional hardware accessing mechanism through a direct I/O mapping. It is a direct 16-bit addressing scheme and doesn&#x2019;t need a mapping to virtual address for its accessing. These addresses are referred to as port addresses, or in short &#x2013; ports. As x86 has this as an additional accessing mechanism, it calls for additional set of x86 (assembly/machine code) instructions. And yes, there are the input instructions inb, inw, inl for reading an 8-bit byte, a 16-bit word, and a 32-bit long word respectively, from the I/O mapped devices through the ports. And the corresponding output instructions are outb, outw, outl, respectively. And the equivalent C functions/macros are as follows (available through the header <code>&lt;asm/io.h&gt;</code>):</p>
+<pre><code class="lang-C"><span class="hljs-function">u8 <span class="hljs-title">inb</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+<span class="hljs-function">u16 <span class="hljs-title">inw</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+<span class="hljs-function">u32 <span class="hljs-title">inl</span><span class="hljs-params">(<span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">outb</span><span class="hljs-params">(u8 value, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">outw</span><span class="hljs-params">(u16 value, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">outl</span><span class="hljs-params">(u32 value, <span class="hljs-keyword">unsigned</span> <span class="hljs-keyword">long</span> port)</span></span>;
+</code></pre>
+<p>The basic question may arise, as to which all devices are I/O mapped and what are the port addresses of these devices. The answer is pretty simple. As per x86-specific, all these devices &amp; their mappings are x86 standard and hence pre-defined. Figure 13 shows a snippet of these mappings through the kernel window /proc/ioports. The listing includes pre-defined DMA, timer, RTC, serial, parallel, PCI bus interfaces to name a few.</p>
+<p><img src="../Images/Part8/figure_13_x86_specific_io_ports.png" alt="Figure 13"></p>
+<h2 id="simplest-the-serial-on-x86-platform">Simplest the serial on x86 platform</h2>
+<p>For example, the first serial port is always I/O mapped from 0x3F8 to 0x3FF. But what does this mapping mean? What do we do with this? How does it help us to use the serial port?
+That is where a data-sheet of the device controlling the corresponding port needs to be looked up. Serial port is controlled by the serial controller device, commonly known as an UART (Universal Asynchronous Receiver/Transmitter) or at times a USART (Universal Synchronous/Asynchronous Receiver/Transmitter). On PCs, the typical UART used is PC16550D. The data-sheet (<a href="https://sysplay.in/blog/pdfs/uart_pc16550d.pdf" target="_blank">uart_pc16550d.pdf</a>) for the same has also been included in the self-extracting <a href="http://esrijan.com/DDK/LDDKv2.1-Package.sh" target="_blank">LDDK-Package.sh</a>, used for the <a href="http://lddk.esrijan.com/" target="_blank">Linux device driver kit</a>. Figure 14 shows the relevant portion of it.</p>
+<p>In general, from where &amp; how do we get these device data-sheets? Typically, an on-line search with the corresponding device number should yield their data-sheet links. And how does one get the device number? Simple, by having a look at the device. If it is inside a desktop, open it up and check it out. Yes, this is the least you may have to do to get going with the hardware for writing device drivers. Assuming all this hacking has been done, it is time to peep into the data-sheet of UART PC16550D.</p>
+<p>For a device driver writer, the usual sections of interest in a data-sheet are the ones related to registers of the device. Why? As, it is these registers, which a device driver writer need to read from and/or write in to finally use the device. Page 14 of the data-sheet (also shown in Figure 14) shows the complete table of all the twelve 8-bit registers present in the UART PC16550D. Each of the 8 rows corresponds to the respective bit of the registers. Also, note that the register addresses start from 0 and goes till 7. The interesting thing to note about this is that a data-sheet always gives the register offsets, which then need to be added to the base address of the device, to get the actual register addresses. Who decides the base address and where is it obtained from? Base addresses are typically board/platform specific, unless they are dynamically configurable like in the case of PCI devices. In the case here, i.e. serial device on x86, it is dictated by the x86 architecture &#x2013; and that is what precisely was the starting serial port address mentioned above &#x2013; 0x3F8. And the eight register offsets 0 to 7 are the ones exactly mapping to the eight port addresses 0x3F8 to 0x3FF. So, these are the actual addresses to be read or written for reading or writing the corresponding serial registers, to achieve the desired serial operations, as per the register descriptions.</p>
+<p><img src="../Images/Part8/figure_14_uart_pc16550d_registers.png" alt="Figure 14"></p>
+<p>All the serial register offsets and the register bit masks are defined in the header <code>&lt;linux/serial_reg.h&gt;</code>. So, rather than hard coding these values from the data-sheet, the corresponding macros could be used instead. All the following code uses these macros along with the following:</p>
+<pre><code class="lang-C"><span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> SERIAL_PORT_BASE <span class="hljs-number">0x3F8</span></span>
+</code></pre>
+<h2 id="operating-on-the-device-registers">Operating on the device registers</h2>
+<p>To summarize all these decoding of UART PC16550D data-sheet, here are a few examples of how to do read and write operations of the serial registers and their bits.</p>
+<p>Reading and writing the &#x201C;Line Control Register (LCR)&#x201D;:</p>
+<pre><code class="lang-C">u8 val;
+
+val = inb(SERIAL_PORT_BASE + UART_LCR <span class="hljs-comment">/* 3 */</span>);
+outb(val, SERIAL_PORT_BASE + UART_LCR <span class="hljs-comment">/* 3 */</span>);
+</code></pre>
+<p>Setting and clearing the &#x201C;Divisor Latch Access Bit (DLAB)&#x201D; in LCR:</p>
+<pre><code class="lang-C">u8 val;
+
+val = inb(SERIAL_PORT_BASE + UART_LCR <span class="hljs-comment">/* 3 */</span>);
+
+<span class="hljs-comment">/* Setting DLAB */</span>
+val |= UART_LCR_DLAB <span class="hljs-comment">/* 0x80 */</span>;
+outb(val, SERIAL_PORT_BASE + UART_LCR <span class="hljs-comment">/* 3 */</span>);
+
+<span class="hljs-comment">/* Clearing DLAB */</span>
+val &amp;= ~UART_LCR_DLAB <span class="hljs-comment">/* 0x80 */</span>;
+outb(val, SERIAL_PORT_BASE + UART_LCR <span class="hljs-comment">/* 3 */</span>);
+</code></pre>
+<p>Reading and writing the &#x201C;Divisor Latch&#x201D;:</p>
+<pre><code class="lang-C">u8 dlab;
+u16 val;
+
+dlab = inb(SERIAL_PORT_BASE + UART_LCR);
+dlab |= UART_LCR_DLAB; <span class="hljs-comment">// Setting DLAB to access Divisor Latch</span>
+outb(dlab, SERIAL_PORT_BASE + UART_LCR);
+
+val = inw(SERIAL_PORT_BASE + UART_DLL <span class="hljs-comment">/* 0 */</span>);
+outw(val, SERIAL_PORT_BASE + UART_DLL <span class="hljs-comment">/* 0 */</span>);
+</code></pre>
+<h2 id="blinking-an-led">Blinking an LED</h2>
+<p>To get a real experience of the low-level hardware access and Linux device drivers, the best way would be to play with the Linux device driver kit (LDDK). However, just for the feel of low-level hardware access, a blinking light emitting diode (LED) may be tried as follows:</p>
+<p>Connect a light emitting diode (LED) with a 330 ohm resistor in series across the pin 3 (Tx) &amp; pin 5 (Gnd) of the DB9 connector of your PC.</p>
+<p>Pull up &amp; down the transmit (Tx) line with a 500 ms delay, by loading the blink_led driver using <code>insmod blink_led.ko</code>, and then unloading the driver using rmmod blink_led, before reloading.
+Below is the <code>blink_led.c</code>, to be compiled into the <code>blink_led.ko</code> driver, by running make using the usual driver Makefile:</p>
+<pre><code class="lang-C"><span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/module.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/version.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/types.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/delay.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;asm/io.h&gt;</span></span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;linux/serial_reg.h&gt;</span></span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> SERIAL_PORT_BASE <span class="hljs-number">0x3F8</span></span>
+
+<span class="hljs-keyword">int</span> __<span class="hljs-function">init <span class="hljs-title">init_module</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> i;
+    u8 data;
+
+    data = inb(SERIAL_PORT_BASE + UART_LCR);
+    <span class="hljs-keyword">for</span> (i = <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">5</span>; i++)
+    {
+        <span class="hljs-comment">/* Pulling the Tx line low */</span>
+        data |= UART_LCR_SBC;
+        outb(data, SERIAL_PORT_BASE + UART_LCR);
+        msleep(<span class="hljs-number">500</span>);
+        <span class="hljs-comment">/* Defaulting the Tx line high */</span>
+        data &amp;= ~UART_LCR_SBC;
+        outb(data, SERIAL_PORT_BASE + UART_LCR);
+        msleep(<span class="hljs-number">500</span>);
+    }
+    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;
+}
+
+<span class="hljs-keyword">void</span> __<span class="hljs-function"><span class="hljs-built_in">exit</span> <span class="hljs-title">cleanup_module</span><span class="hljs-params">()</span>
+</span>{
+}
+
+MODULE_LICENSE(<span class="hljs-string">&quot;GPL&quot;</span>);
+MODULE_AUTHOR(<span class="hljs-string">&quot;Anil Kumar Pugalia &lt;email@sarika-pugs.com&gt;&quot;</span>);
+MODULE_DESCRIPTION(<span class="hljs-string">&quot;Blinking LED Hack&quot;</span>);
+</code></pre>
+<h2 id="summing-up">Summing up</h2>
+<p>Are you wondering as where has Shweta gone today? She has bunked all the classes. Watch out for the next article to find out why.</p>
+<h2 id="notes">Notes</h2>
+<ol>
+<li>The above example is to demonstrate how bare bone easy the low level access could get. However, to make it more perfect, one should use the APIs request_region() and release_region(), respectively before and after the accesses of the I/O port addresses, respectively to acquire and release the range of I/O port addresses to access.</li>
+<li>Also, you might have observed that there is no <code>module_init()</code> &amp; <code>module_exit()</code> in the above driver. But nonetheless, insmod &amp; rmmod do work. How is that? That is because <code>init_module()</code> &amp; <code>cleanup_module()</code> are the predefined names for the constructor &amp; the destructor, respectively. Hence, you do not need <code>module_init()</code> &amp; <code>module_exit()</code> to translate your other function names to these predefined ones. Caution: Since kernel 2.6 onwards, if you are building the driver into the kernel, you should define your own function names &amp; use <code>module_init()</code> &amp; <code>module_exit()</code>.</li>
+</ol>
+
+                    
+                    </section>
+                
+                
+                </div>
+            </div>
+        </div>
+
+        
+        <a href="../Content/Part07.html" class="navigation navigation-prev " aria-label="Previous page: Generic Hardware Access in Linux"><i class="fa fa-angle-left"></i></a>
+        
+        
+        <a href="../Content/Part09.html" class="navigation navigation-next " aria-label="Next page: I/O Control in Linux"><i class="fa fa-angle-right"></i></a>
+        
+    </div>
+</div>
+
+        
+<script src="../gitbook/app.js"></script>
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/lunr.min.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-search/search.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-sharing/buttons.js"></script>
+    
+
+    
+    <script src="../gitbook/plugins/gitbook-plugin-fontsettings/buttons.js"></script>
+    
+
+<script>
+require(["gitbook"], function(gitbook) {
+    var config = {"highlight":{},"search":{"maxIndexSize":1000000},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2}};
+    gitbook.start(config);
+});
+</script>
+
+        
+    </body>
+    
+</html>

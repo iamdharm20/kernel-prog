@@ -1,0 +1,365 @@
+https://blog.csdn.net/STN_LCD/article/details/78846920
+https://blog.csdn.net/Lonzoc/article/details/53364842
+https://blog.csdn.net/STN_LCD/article/details/78846910
+https://blog.csdn.net/tianlesoftware/article/details/6461207
+
+Linux Interrupt API
+
+1.Request IRQ
+
+int __must_check request_threaded_irq(unsigned int irq, irq_handler_t handler, irq_handler_t thread_fn,  
+    unsigned long flags, const char *name, void *dev);
+
+int __must_check request_irq(unsigned int irq, irq_handler_t handler,  
+        unsigned long flags, const char *name, void *dev)  
+
+void free_irq(unsigned int irq, void *dev_id);  
+
+Irq - irq number
+Handler - hardware irq handler, hard interrupt, executed in interrupt context
+Thread_fn - threaded irq handler, which executes the thread function that interrupts the actual task, in the thread
+Context execution
+Flags - interrupt flag, trigger mode, execution mode, etc.
+Name - the name of the IRQ
+Dev - can be any argument that will be passed to handler/thread_fn and can be used to save
+A pointer to a variable/struct to use in the interrupt function.
+
+Note:
+- Calling this function will apply interrupt resources to the interrupt subsystem while enabling the IRQ Line.
+- The handler/thread_fn is allowed to exist at the same time, but only one of them is allowed, but both are not allowed to be NULL.
+- The handler function (top half) is executed in the interrupt context and should be guaranteed to be executed quickly. The interrupt context is not allowed
+Having sleep/task schedule and so on will lead to voluntarily relinquishing CPU operations and cannot use APIs such as mutex/semaphore that may cause blocking
+- Interrupt context does not allow access to user-space memory
+- Time-consuming operations should be performed in the thread_fn (bottom half), if the handler exists, when the handler
+When IRQ_WAKE_THREAD is returned, the thread where thread_fn is located will be awakened. If the handler does not exist, the default is
+After the interrupt is triggered, wake up the thread where thread_fn is located.
+- Interrupting the bottom half can be done via workqueue or by creating kthreads on its own. They are essentially
+Kernel thread, but threads created with request_threaded_irq have higher priority and real-time
+Higher scheduling strategies, so if you have real-time requirements for the bottom half, you should use request_threaded_irq first.
+The use of threaded irq does not have the limitations of softirq and tasklet, and it has a higher execution priority and is recommended.
+
+Resouce Managed API:
+
+Compared to the API without resource management, the following API has one more parameter, struce device *dev, located in the first parameter position. The caller does not need to care about the irq release operation. When the driver and device detach, irq will be automatically released.
+
+devm_request_threaded_irq  
+devm_request_irq  
+devm_free_irq
+
+2.enable/disable IRQ
+
+void disable_irq_nosync(unsigned int irq); 
+void disable_irq(unsigned int irq);  
+
+Disale irq and synchronously wait for the interrupt to complete before returning.
+Therefore, disable_irq cannot be executed in the interrupted top half. Otherwise, it will cause a deadlock.
+
+Enable IRQ
+
+void enable_irq(unsigned int irq); 
+
+The enable_irq does not distinguish between synchronous and asynchronous. When desc->irq_data.chip->bus_lock and desc->chip->bus_sync_unlock
+When NULL, enable_irq can be called in the interrupt context.
+Enable/disable irq must be used in pairs. For example, after calling disable_irq twice, irq will be in the disabled state until
+Call enable_irq twice.
+
+To disable interrupts locally for the current processor (and only the current processor) and then later reenable them, do the following
+These functions are usually implemented as a single assembly operation (of course, this depends on the architecture).
+
+Local_irq_disable() disables interrupts
+Local_irq_enable() Open an interrupt
+Local_irq_save(flag) Disables interrupts and saves the interrupt register
+Local_irq_restore(flags) Turn on interrupts, restore registers
+Local_bh_disable() only disable interrupts at the bottom half
+Local_bh_enable() opens
+
+Disabling a Specific Interrupt Line
+
+In the previous section, we looked at functions that disable all interrupt delivery for an entire processor. In some cases, it is useful to disable only a specific interrupt line for the entire system. This is called masking out an interrupt line. As an example, you might want to disable delivery of a device's interrupts before manipulating its state. Linux provides four interfaces for this task:
+
+void disable_irq(unsigned int irq);
+void disable_irq_nosync(unsigned int irq);
+void enable_irq(unsigned int irq);
+void synchronize_irq(unsigned int irq);
+
+3. Make IRQ a Wakeup Source :
+int enable_irq_wake(unsigned int irq);  
+int disable_irq_wake(unsigned int irq);  
+
+After calling enable_irq_wake, the irq will be in wake state. When the system enters deep sleep state, other irq will
+Is masked, but this irq can still be triggered and processed (can wake up master)
+
+Are we doing bottom half or hardware interrupt processing?
+Are we in a softirq context? Interrupt context?
+in_irq() in_softirq() in_interrupt()
+
+#define in_irq() (hardirq_count()) //determine if it is currently in hardware interrupt context
+#define in_softirq() (softirq_count()) //determine if it is currently in software interrupt context
+#define in_interrupt() (irq_count()) //determine if the current hardware, software or bottom half of the interrupt context
+
+locks:
+
+1. Semaphore
+=================
+<linux/semaphore.h>
+The semaphore is essentially an integer value and enters the critical region. The semaphore is decremented by one. If the semaphore is greater than zero, then
+Continued operation, exit the critical area semaphore plus one, mutex (mutex) is also a kind of semaphore.
+
+When the operation of getting a signal (down operation) cannot be completed, the down operation will internally block the current task.
+Do not return until the semaphore can be obtained.
+Because semaphores may cause thread blocks and schedules, they cannot be used for interrupt contexts and atomic contexts.
+
+Dynamically initialized semaphore
+Void sema_init(struct semaphore *sem,int val)
+Static declaration mutex semaphore
+DECLARE_MUTEX(name) DECLARE_MUTEX_LOCKED(name)
+Dynamic initialization of mutex semaphores
+Void init_MUTEX(struct semaphore *sem)
+Void init_MUTEX_LOCKED(struct semaphore *sem)
+Get semaphore
+Void down(struct semaphore *sem) blocking
+Int down_interruptible(struct semaphore *sem) blocking but interruptible
+Int down_trylock(struct semaphore *sem) does not block, is not available immediately returns a non-zero value
+Release semaphore
+Void up(struct semaphore *sem)
+
+Read-write semaphore
+
+    Void init_rwsem(struct rw_semaphore *sem)
+    Down_read()
+    Up_read()
+    Down_write()
+    Up_write()
+
+Read and write semaphores allow multiple threads to read concurrently, but when there is a write operation, all read operations will block.
+Read and write semaphores apply to application scenarios where the number of data consumers is much larger than the number of data producers.
+
+2. Completion volume completion
+==================
+#include <linux/completion.h>
+The amount of completion is a lightweight mechanism multi-thread synchronization mechanism that allows one thread to tell another thread to work
+Has been completed.
+The thread block and schedule used by the completion amount implementation mechanism may cause the thread to sleep.
+It cannot therefore be used to interrupt contexts and atomic contexts.
+
+
+3. Spin lock spinlock
+================
+#include <linux/spinlock.h>
+A spin lock is a mutually exclusive device that has only two values: lock and unlock.
+The critical region protected by the spin lock belongs to the atomic context and therefore cannot be invoked in the critical region anything that may result
+The sleep/schedule/block API.
+The spinlock is implemented by the busy wait method. During busy waiting, the CPU cannot perform other tasks. Therefore, it takes a long period of time.
+Having a self-selection lock will affect the system's efficiency, and the shared resource should be completed as soon as possible while holding the spin lock.
+Release the spin lock. If you need to occupy shared resources for a long time, we recommend using other types of locks.
+
+When using spinlocks, there are the following restrictions on the location of shared resources:
+
+hared resources are only in the process context
+
+(1)Spin_lock/spin_unlock
+
+  Or other derived APIs can be used, but it is not necessary.
+
+(2) Shared resources in process context and interrupt context
+Use in process context
+Spin_lock_irqsave/spin_unlock_irqrestore or
+Spin_lock_irq/spin_unlock_irq
+In the interrupt context, if no other interrupt uses the shared resource
+        Spin_lock/spin_unlock
+In the interrupt context, if there are other interrupts using the shared resource
+Spin_lock_irqsave/spin_unlock_irqrestore or
+Spin_lock_irq/spin_unlock_irq
+
+(3) Shared resources in process context and soft interrupt context
+Both sortirq and tasklet/hrtimer belong to the soft interrupt context
+Use in process context
+Spin_lock_bh/spin_unlock_bh
+Use in soft interrupt context
+Spin_lock/spin_unlock
+
+(4) Shared resources exist in the process context software interrupt context and interrupt context
+Use in process context
+Spin_lock_irqsave/spin_unlock_irqrestore or
+Spin_lock_irq/spin_unlock_irq
+Use in soft interrupt context
+Spin_lock_irqsave/spin_unlock_irqrestore or
+Spin_lock/spin_unlock
+In the interrupt context, if no other interrupt uses the shared resource
+        Spin_lock/spin_unlock
+In the interrupt context, if there are other interrupts using the shared resource
+Spin_lock_irqsave/spin_unlock_irqrestore or
+Spin_lock_irq/spin_unlock_irq
+
+API:
+
+initialization
+Spin_lock_t xxx_lock = SPIN_UNLOCKED;
+Dynamic initialization
+Void spin_lock_init(spinlock_t *lock)
+
+Lock function
+
+Void spin_lock(spinlock_t *lock)
+Void spin_lock_irq(spinlock_t *lock)
+Void spin_lock_irqsave(spinlock_t *lock, unsigned long flag)
+Void spin_lock_bh(spinlock_t *lock) disables software interrupt before acquiring spinlock, hardware interrupt remains open
+
+unlock function
+
+void spin_unlock(spinlock_t *lock）
+void spin_unlock_irq(spinlock_t *lock)
+void spin_unlock_irqrestore(spinlock_t *lock, unsigned long flag)
+void spin_unlock_bh(spinlock_t  *lock) 
+
+Write spin lock
+#include <linux/rwlock.h>
+rwlock_t xxx_rwlock;
+rwlock_init(&xxx_rwlock)
+or
+rwlock_t xxx_rwlock = RW_LOCK_UNLOCKED;
+
+Read spin lock
+void read_lock(rwlock_t *lock)
+void read_lock_irqsave(rwlock_t *lock ,unsigned long flag)
+void read_lock_irq(rwlock_t *lock)
+void read_lock_bh(rwlock_t *lock)
+
+void read_unlock(rwlock_t *lock)
+void read_unlock_irqrestore(rwlock_t *lock ,unsigned long flag)
+void read_unlock_irq(rwlock_t *lock)
+void read_unlock_bh(rwlock_t *lock) 
+
+
+4 mutex mutex
+=============
+#include <linux/mutex.h>
+A mutex is a special type of semaphore. It has only two states: locked and unlocked. It can be seen as having a value of only 0 and 1.
+signal. Mutexes are very common in kernel drivers and their use is simpler.
+
+Because mutexes may cause thread blocks and schedules, they cannot be used for interrupt contexts and atomic contexts
+
+static initialization
+    DEFINE_MUTEX(a) defines a global mutex variable a
+    Struct mutex a = __MUTEX_INITIALIZER(a);
+    Dynamic initialization
+    Struct mutex a;
+    Mutex_init(a);
+     
+    Get and release mutexes
+    Void mutex_lock(struct mutex *lock);
+    Int mutex_lock_interruptible(struct mutex *lock);
+    Int mutex_lock_killable(struct mutex *lock);
+    Int mutex_trylock(struct mutex *lock);
+    Void mutex_unlock(struct mutex *lock);
+
+5. Atomic operations atomic
+#include <linux/atomic.h>
+Set the value of an atomic variable
+Atomic_t v = ATOMIC_INIT(0)
+Void atomic_set(atomic_t *v,int i)
+ 
+Get the value of an atomic variable
+Int atomic_read(atomic_t *v)
+ 
+ 
+Atomic variable operations
+Void atomic_add(int i,atomic_t *v)
+Void atomic_sub(int i, atomic_t *v)
+Void atomic_inc(atomic_t *v)
+Void atomic_dec(atomic_t *v)
+
+Operation and test Returns atomic if the atom value is 0, false otherwise
+Int atomic_inc_and_test(atomic_t *v)
+Int atomic_dec_and_test(atomic_t *v)
+Int atomic_sub_and_test(int i,atomic_t *v)
+ 
+ 
+After the operation is finished, return the new value
+Int atomic_add_return(int i,atomic_t *v)
+Int atomic_sub_return(int i,atomic_t *v)
+Int atomic_inc_return(atomic_t *v)
+Int atomic_dec_return(atomic_t *v)
+ 
+ 
+Atomic weight complex exchange operation
+Int atomic_cmpxchg(atomic_t *v, int old, int new)
+When v == old, assign new to v and return the value of v before the operation.
+ 
+ 
+Int atomic_add_unless(atomic_t *v, int a, int u)
+When v == u, add a to v and return 0
+When v != u, returns 1
+
+void set_bit(nr ,void *addr)
+void clear_bit(nr,void *addr)
+void change_bit(nr,void *addr)
+void test_and_set_bit(nr ,void *addr)
+void test_and_clear_bit(nr,void *addr)
+void test_and_change_bit(nr,void *addr)
+
+
+Few Important Kernel Mechanisms used in Drivers
+
+Wait Queues:
+Wait queue is a mechanism in kernel through which the kernel code can put the process to sleep. This is used in different parts of kernel where the kernel decides to put the process to sleep. Kernel puts the process to sleep in case the required event has not yet occurred (for e.g. some process wants to read from device and there is no data to be read), in this case kernel puts the process to sleep and gets back the processor from it by calling the schedule() function, which is a scheduler in Linux Kernel. schedule() function schedules and dispatches the other process.
+
+Before discussing the function related to sleeping a process, we should look what data structures are used for implementing a wait queue in kernel.
+
+Wait queue is actually a linked list of “wait_queue_t” type of structures. The head of wait queue is represented by “wait_queue_head_t” structure, which contains the spin lock to synchronize the access to wait queue. “wait_queue_head_t” structure also contains the pointer to the first element in wait queue. Each element in the wait queue is represented by “wait_queue_t” structure, which contains the pointer to the “task_struct” type of structure. It also contains the pointer to next element in the wait queue. “task_struct” represents the alive process in kernel. So with this mechanism of wait queue driver or any kernel part can keep track of process waiting for a specific event to occur.
+
+
+Putting process to sleep:
+Process can be put to sleep by using any of the following kernel functions. You can call these functions from anywhere in the kernel (drivers, modules or the core kernel) in case you want to put your process to sleep. Whenever a kernel code is executed (when system call is made by the user process), kernel code executes in the context of process which has made a system call. But there is exception to this rule, whenever the interrupt occurs the kernel code (interrupt handler) does not execute in process context, it’s a anonymous context. This is the reason that we should be careful to not to call any function in interrupt handler which can put the execution thread to sleep. If we do so the kernel will hang, that means the system will hang.
+
+Functions which can put a process to sleep:
+- sleep_on(wait_queue_head_t * wait_queue)
+- interruptible_sleep_on(wait_queue_head_t * wait_queue)
+- sleep_on_timeout(wait_queue_head_t * wait_queue, long timeout)
+- interruptible_sleep_on_timeout(wait_queue_head_t * wait_queue, long timeout)
+
+In above functions, “wait_queue” is the wait_queue_head and “timeout” is the value mentioned in terms of jiffies. We will talk about jiffies very soon. Now we will see the difference between above mentioned functions.
+
+- sleep_on: This function puts the process to sleep in TASK_UNINTERRPTIBLE mode, which means the process will not be waked up in case process receives any signal while it was in sleep. The process will only be waked up any other part of kernel code wakes it up (normally on the occurrence of some event) deliberately by calling any of the waking function (we will be discussing the waking up functions very soon). Process put to sleep with this function can sometimes cause some problem. For e.g. if a process is put to sleep with this function and the event on which it need to be waked up does not occur then your process will not come back to the execution stage. That process can not even be killed by sending a KILL signal, as process in sleep in TASK_UNINTERRUPTIBLE mode ignores all signals. Process put to sleep with this function can be waked if any of the following conditions occur:
+
+o Process is deliberately waked up by some part of the kernel code on the occurrence of event for which it was waiting
+
+- interruptible_sleep_on: This function in kernel is written to avoid the problem caused by “sleep_on” function. This function puts the process to sleep in TASK_INTERRUPTIBLE mode. When a process sleeps in this mode, it can be waked up if any of the following condition occurs:
+
+o Process receives the signal either from any other process or kernel itself.
+o Process is deliberately waked up by some part of the kernel code on the occurrence of event for which it was waiting.
+
+- sleep_on_timeout: This function is similar to “sleep_on” function but is not that much dangerous as “sleep_on”. Process put to sleep with this function can be waked if any of the following conditions occurs:
+
+o Time mentioned in the timeout parameter has expired
+o Process is deliberately waked up by some part of the kernel code on the occurrence of event for which it was waiting.
+
+- interruptible_sleep_on_timeout: I hope by now you can easily guess what this function does. Well the process put to sleep with this function is waked up when any of the following conditions occurs:
+
+o Process receives the signal either from any other process or kernel itself.
+o Time mentioned in the timeout parameter has expired
+o Process is deliberately waked up by some part of the kernel code on the occurrence of event for which it was waiting.
+
+
+A process can go to sleep using the schedule() function. The following code puts the executing process to sleep:
+
+sleeping_task = current;
+set_current_state(TASK_INTERRUPTIBLE);
+schedule();
+func1();
+/* The rest of the code */
+
+Waking up a process:
+Process put to sleep should also be waked up by some kernel code else the process will never return to the execution state. If your driver is putting the process to sleep, it’s the responsibility of that driver itself to wake up the sleeping processes when the required event occurs for which those processes are waiting. For e.g. if your driver put the reading process to sleep on its internal waiting queue, if there is nothing to read from driver buffer (driver buffer empty) then the process put to sleep should also be waked up whoever new data arrives in driver buffer (this will occur when device interrupts, so interrupt handler will be responsible for waking up the process sleeping on the driver’s waiting queue).
+
+Functions which can be explicitly called to wake up the process:
+- wake_up(wait_queue_head_t * wait_queue)
+- wake_up_interruptible(wait_queue_head_t * wait_queue)
+- wake_up_sync(wait_queue_head_t * wait_queue)
+- wake_up_interruptible_sync(wait_queue_head_t * wait_queue)
+
+You also may use a more convenient API, with which you can specify time in milliseconds and seconds:
+    msleep(time_in_msec);
+    msleep_interruptible(time_in_msec);
+    ssleep(time_in_sec);
+

@@ -1,0 +1,410 @@
+sysfs is a ram-based filesystem [...]. It provides a means to export kernel data structures, 
+their attributes, and the linkages between them to userspace.
+
+/sys/block
+
+This directory contains entries for each block device in the system. 
+Symbolic links point to the physical device that the device maps to in the physical device tree. 
+For example, attributes for the sda disks reside in the following directory:
+
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop0 -> ../devices/virtual/block/loop0
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop1 -> ../devices/virtual/block/loop1
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop2 -> ../devices/virtual/block/loop2
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop3 -> ../devices/virtual/block/loop3
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop4 -> ../devices/virtual/block/loop4
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop5 -> ../devices/virtual/block/loop5
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop6 -> ../devices/virtual/block/loop6
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 loop7 -> ../devices/virtual/block/loop7
+lrwxrwxrwx  1 root root 0 Jun 28 06:32 mmcblk0 -> ../devices/platform/c0000000.soc/c0069000.dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 mmcblk0boot0 -> ../devices/platform/c0000000.soc/c0069000.dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/m0
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 mmcblk0boot1 -> ../devices/platform/c0000000.soc/c0069000.dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/m1
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 mmcblk0rpmb -> ../devices/platform/c0000000.soc/c0069000.dw_mmc/mmc_host/mmc0/mmc0:0001/block/mmcblk0/mmb
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram0 -> ../devices/virtual/block/ram0
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram1 -> ../devices/virtual/block/ram1
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram10 -> ../devices/virtual/block/ram10
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram11 -> ../devices/virtual/block/ram11
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram12 -> ../devices/virtual/block/ram12
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram13 -> ../devices/virtual/block/ram13
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram14 -> ../devices/virtual/block/ram14
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram15 -> ../devices/virtual/block/ram15
+lrwxrwxrwx  1 root root 0 Jun 28 09:15 ram2 -> ../devices/virtual/block/ram2
+
+/sys/bus
+
+This directory contains subdirectories for each physical bus type supported in the kernel. 
+Each bus type has two subdirectories: devices and drivers. 
+The devices directory lists devices discovered on that type of bus. 
+The drivers directory contains directories for each device driver registered with the bus type. 
+Driver parameters can be viewed and manipulated. For example, to list the drivers for the virtual devices, enter:
+
+[root@artik bus]# ls -al ../bus
+
+drwxr-xr-x  4 root root 0 Jun 28 06:32 amba
+drwxr-xr-x  4 root root 0 Jun 28 06:32 clockevents
+drwxr-xr-x  4 root root 0 Jun 28 06:32 clocksource
+drwxr-xr-x  4 root root 0 Jun 28 06:32 container
+drwxr-xr-x  4 root root 0 Jun 28 06:32 cpu
+drwxr-xr-x  4 root root 0 Jun 28 06:32 event_source
+drwxr-xr-x  4 root root 0 Jun 28 06:32 hid
+drwxr-xr-x  4 root root 0 Jun 28 06:32 i2c
+drwxr-xr-x  4 root root 0 Jun 28 06:32 iio
+drwxr-xr-x  4 root root 0 Jun 28 06:32 mdio_bus
+drwxr-xr-x  4 root root 0 Jun 28 06:32 media
+drwxr-xr-x  4 root root 0 Jun 28 06:32 mipi-dsi
+drwxr-xr-x  4 root root 0 Jun 28 06:32 mmc
+drwxr-xr-x  4 root root 0 Jun 28 06:32 platform
+drwxr-xr-x  4 root root 0 Jun 28 06:32 scsi
+drwxr-xr-x  4 root root 0 Jun 28 06:32 sdio
+drwxr-xr-x  4 root root 0 Jun 28 06:32 serio
+drwxr-xr-x  4 root root 0 Jun 28 06:32 spi
+drwxr-xr-x  4 root root 0 Jun 28 06:32 usb
+drwxr-xr-x  4 root root 0 Jun 28 06:32 workqueue
+[root@artik bus]#
+
+[root@artik bus]# ls -al i2c/drivers/
+drwxr-xr-x  2 root root 0 Jun 28 06:32 S5K4ECGA
+drwxr-xr-x  2 root root 0 Jun 28 06:32 S5KRD4
+drwxr-xr-x  2 root root 0 Jun 28 06:32 atmel_mxt_ts
+drwxr-xr-x  2 root root 0 Jun 28 06:32 bq2429x_charger
+drwxr-xr-x  2 root root 0 Jun 28 06:32 bq25890-charger
+drwxr-xr-x  2 root root 0 Jun 28 06:32 cw201x
+drwxr-xr-x  2 root root 0 Jun 28 06:32 dummy
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nxe2000
+drwxr-xr-x  2 root root 0 Jun 28 06:32 ov5640
+drwxr-xr-x  2 root root 0 Jun 28 06:32 rt5659
+drwxr-xr-x  2 root root 0 Jun 28 06:32 rtc-ds1307
+drwxr-xr-x  2 root root 0 Jun 28 06:32 usb3503
+drwxr-xr-x  2 root root 0 Jun 28 06:32 zinitix_touch
+
+[root@artik bus]# ls -al i2c/devices/
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 0-0056 -> ../../../devices/platform/c0000000.soc/c00a4000.i2c/i2c-0/0-0056
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 1-006b -> ../../../devices/platform/c0000000.soc/c00a5000.i2c/i2c-1/1-006b
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 2-0020 -> ../../../devices/platform/c0000000.soc/c00a6000.i2c/i2c-2/2-0020
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 2-004a -> ../../../devices/platform/c0000000.soc/c00a6000.i2c/i2c-2/2-004a
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 3-0033 -> ../../../devices/platform/c0000000.soc/c0000000.soc:i2c@3/i2c-3/3-0033
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 4-0068 -> ../../../devices/platform/i2c@4/i2c-4/4-0068
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 5-0008 -> ../../../devices/platform/i2c@5/i2c-5/5-0008
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 6-001a -> ../../../devices/platform/i2c@6/i2c-6/6-001a
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 8-0062 -> ../../../devices/platform/i2c@8/i2c-8/8-0062
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 9-006b -> ../../../devices/platform/i2c@9/i2c-9/9-006b
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-0 -> ../../../devices/platform/c0000000.soc/c00a4000.i2c/i2c-0
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-1 -> ../../../devices/platform/c0000000.soc/c00a5000.i2c/i2c-1
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-10 -> ../../../devices/platform/i2c@10/i2c-10
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-2 -> ../../../devices/platform/c0000000.soc/c00a6000.i2c/i2c-2
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-3 -> ../../../devices/platform/c0000000.soc/c0000000.soc:i2c@3/i2c-3
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-4 -> ../../../devices/platform/i2c@4/i2c-4
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-5 -> ../../../devices/platform/i2c@5/i2c-5
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-6 -> ../../../devices/platform/i2c@6/i2c-6
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-7 -> ../../../devices/platform/i2c@7/i2c-7
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-8 -> ../../../devices/platform/i2c@8/i2c-8
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c-9 -> ../../../devices/platform/i2c@9/i2c-9
+[root@artik bus]#
+
+
+[root@artik platform]# ls -al drivers
+total 0
+drwxr-xr-x 65 root root 0 Jun 28 10:22 .
+drwxr-xr-x  4 root root 0 Jun 28 09:16 ..
+drwxr-xr-x  2 root root 0 Jun 28 06:32 alarmtimer
+drwxr-xr-x  2 root root 0 Jun 28 06:32 alc5658-audio
+drwxr-xr-x  2 root root 0 Jun 28 06:32 armv7-pmu
+drwxr-xr-x  2 root root 0 Jun 28 06:32 artik_zb_power
+drwxr-xr-x  2 root root 0 Jun 28 06:32 asoc-simple-card
+drwxr-xr-x  2 root root 0 Jun 28 06:32 cpufreq-dt
+drwxr-xr-x  2 root root 0 Jun 28 06:32 dw_mmc
+drwxr-xr-x  2 root root 0 Jun 28 06:32 dwc2
+drwxr-xr-x  2 root root 0 Jun 28 06:32 dwmmc_nexell
+drwxr-xr-x  2 root root 0 Jun 28 06:32 exynos-ehci
+drwxr-xr-x  2 root root 0 Jun 28 06:32 exynos-ohci
+drwxr-xr-x  2 root root 0 Jun 28 06:32 gpio-button-manager
+drwxr-xr-x  2 root root 0 Jun 28 06:32 gpio-keys
+drwxr-xr-x  2 root root 0 Jun 28 06:32 hci_bcm
+drwxr-xr-x  2 root root 0 Jun 28 06:32 i2c-gpio
+drwxr-xr-x  2 root root 0 Jun 28 06:32 mali-utgard
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell,display_drm
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell,display_drm_hdmi
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell,display_drm_lcd
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-adc
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-cpufreq
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-dwmac
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-i2c
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-i2s
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-pcm
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-pinctrl
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-reset
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nexell-spdif-tx
+drwxr-xr-x  2 root root 0 Jun 28 06:32 ntc-thermistor
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-busqos
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-clipper
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-csi
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-decimator
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-devfreq
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-rtc
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-v4l2
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-vip
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nx-vpu
+drwxr-xr-x  2 root root 0 Jun 28 06:32 nxe2000-regulator
+drwxr-xr-x  2 root root 0 Jun 28 06:32 panel-simple
+drwxr-xr-x  2 root root 0 Jun 28 06:32 pwm-backlight
+drwxr-xr-x  2 root root 0 Jun 28 06:32 reg-dummy
+drwxr-xr-x  2 root root 0 Jun 28 06:32 reg-fixed-voltage
+drwxr-xr-x  2 root root 0 Jun 28 06:32 reg-userspace-consumer
+drwxr-xr-x  2 root root 0 Jun 28 06:32 reg-virt-consumer
+drwxr-xr-x  2 root root 0 Jun 28 06:32 s3c2410-wdt
+drwxr-xr-x  2 root root 0 Jun 28 06:32 samsung,s3t9mf
+drwxr-xr-x  2 root root 0 Jun 28 06:32 samsung-pwm
+drwxr-xr-x  2 root root 0 Jun 28 06:32 samsung-usb2-phy
+drwxr-xr-x  2 root root 0 Jun 28 06:32 sbsa-uart
+drwxr-xr-x  2 root root 0 Jun 28 06:32 scaler
+drwxr-xr-x  2 root root 0 Jun 28 06:32 sd8x-rfkill
+drwxr-xr-x  2 root root 0 Jun 28 06:32 simple-framebuffer
+drwxr-xr-x  2 root root 0 Jun 28 06:32 snd-null
+drwxr-xr-x  2 root root 0 Jun 28 06:32 snd-null-card
+drwxr-xr-x  2 root root 0 Jun 28 06:32 snd-soc-dummy
+drwxr-xr-x  2 root root 0 Jun 28 06:32 soc-audio
+drwxr-xr-x  2 root root 0 Jun 28 06:32 spdif-dir
+drwxr-xr-x  2 root root 0 Jun 28 06:32 spdif-dit
+drwxr-xr-x  2 root root 0 Jun 28 06:32 spdif-transceiver
+drwxr-xr-x  2 root root 0 Jun 28 06:32 stmmaceth
+drwxr-xr-x  2 root root 0 Jun 28 06:32 syscon
+drwxr-xr-x  2 root root 0 Jun 28 06:32 usb3503
+[root@artik platform]#
+
+
+[root@artik platform]# ls -al devices/
+total 0
+drwxr-xr-x 2 root root 0 Jun 28 10:21 .
+drwxr-xr-x 4 root root 0 Jun 28 09:16 ..
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 Fixed MDIO bus.0 -> ../../../devices/platform/Fixed MDIO bus.0
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 alarmtimer -> ../../../devices/platform/alarmtimer
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 artik_s3t9mf -> ../../../devices/platform/artik_s3t9mf
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 artik_zb_power -> ../../../devices/platform/artik_zb_power
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0000000.amba -> ../../../devices/platform/c0000000.soc/c0000000.amba
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0000000.soc -> ../../../devices/platform/c0000000.soc
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0000000.soc:clipper0@c0063000 -> ../../../devices/platform/c0000000.soc/c0000000.soc:clipper0@c0063000
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0000000.soc:i2c@3 -> ../../../devices/platform/c0000000.soc/c0000000.soc:i2c@3
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0000000.soc:pmu -> ../../../devices/platform/c0000000.soc/c0000000.soc:pmu
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0002000.interrupt-controller -> ../../../devices/platform/c0000000.soc/c0002000.interrupt-controller
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0010000.oscillator -> ../../../devices/platform/c0010000.oscillator
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0011000.nexell-usbphy -> ../../../devices/platform/c0000000.soc/c0011000.nexell-usbphy
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0011000.tieoff -> ../../../devices/platform/c0000000.soc/c0011000.tieoff
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0012000.reset -> ../../../devices/platform/c0000000.soc/c0012000.reset
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0017000.timer -> ../../../devices/platform/c0000000.soc/c0017000.timer
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0018000.pwm -> ../../../devices/platform/c0000000.soc/c0018000.pwm
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0019000.watchdog -> ../../../devices/platform/c0000000.soc/c0019000.watchdog
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c001a000.pinctrl -> ../../../devices/platform/c0000000.soc/c001a000.pinctrl
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0020000.ohci -> ../../../devices/platform/c0000000.soc/c0020000.ohci
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0030000.ehci -> ../../../devices/platform/c0000000.soc/c0030000.ehci
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0040000.dwc2otg -> ../../../devices/platform/c0000000.soc/c0040000.dwc2otg
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0053000.adc -> ../../../devices/platform/c0000000.soc/c0053000.adc
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0055000.i2s -> ../../../devices/platform/c0000000.soc/c0055000.i2s
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0059000.spdiftx -> ../../../devices/platform/c0000000.soc/c0059000.spdiftx
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0060000.ethernet -> ../../../devices/platform/c0000000.soc/c0060000.ethernet
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0062000.dw_mmc -> ../../../devices/platform/c0000000.soc/c0062000.dw_mmc
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0063000.vip -> ../../../devices/platform/c0000000.soc/c0063000.vip
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0066000.scaler -> ../../../devices/platform/c0000000.soc/c0066000.scaler
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0068000.dw_mmc -> ../../../devices/platform/c0000000.soc/c0068000.dw_mmc
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0069000.dw_mmc -> ../../../devices/platform/c0000000.soc/c0069000.dw_mmc
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0070000.gpu -> ../../../devices/platform/c0000000.soc/c0070000.gpu
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0080000.video-codec -> ../../../devices/platform/c0000000.soc/c0080000.video-codec
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00a4000.i2c -> ../../../devices/platform/c0000000.soc/c00a4000.i2c
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00a5000.i2c -> ../../../devices/platform/c0000000.soc/c00a5000.i2c
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00a6000.i2c -> ../../../devices/platform/c0000000.soc/c00a6000.i2c
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00bb000.clocks -> ../../../devices/platform/c0000000.soc/c00bb000.clocks
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00bb000.dynamic-freq -> ../../../devices/platform/c0000000.soc/c00bb000.dynamic-freq
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00d0000.mipi_csi -> ../../../devices/platform/c0000000.soc/c00d0000.mipi_csi
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c00e0000.busqos -> ../../../devices/platform/c00e0000.busqos
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0101000.display_drm_hdmi -> ../../../devices/platform/c0000000.soc/c0101000.display_drm_hdmi
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0101000.display_drm_lvds -> ../../../devices/platform/c0000000.soc/c0101000.display_drm_lvds
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0101000.display_drm_mipi -> ../../../devices/platform/c0000000.soc/c0101000.display_drm_mipi
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 c0102800.display_drm -> ../../../devices/platform/c0000000.soc/c0102800.display_drm
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 cf000000.l2-cache-controller -> ../../../devices/platform/c0000000.soc/cf000000.l2-cache-controller
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 f0000000.0xf0000000 -> ../../../devices/platform/f0000000.0xf0000000
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 f0000600.timer -> ../../../devices/platform/c0000000.soc/f0000600.timer
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 f0001000.interrupt-controller -> ../../../devices/platform/c0000000.soc/f0001000.interrupt-controller
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 gpio_keys -> ../../../devices/platform/gpio_keys
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@10 -> ../../../devices/platform/i2c@10
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@4 -> ../../../devices/platform/i2c@4
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@5 -> ../../../devices/platform/i2c@5
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@6 -> ../../../devices/platform/i2c@6
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@7 -> ../../../devices/platform/i2c@7
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@8 -> ../../../devices/platform/i2c@8
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 i2c@9 -> ../../../devices/platform/i2c@9
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 nexell-pcm -> ../../../devices/platform/nexell-pcm
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 nx-devfreq -> ../../../devices/platform/nx-devfreq
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 nx-v4l2 -> ../../../devices/platform/nx-v4l2
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 nxe2000-regulator -> ../../../devices/platform/c0000000.soc/c0000000.soc:i2c@3/i2c-3/3-0033/nxe2000-regulr
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 panel-simple -> ../../../devices/platform/panel-simple
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 psci -> ../../../devices/platform/psci
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 pwm-backlight -> ../../../devices/platform/pwm-backlight
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 reg-dummy -> ../../../devices/platform/reg-dummy
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 regulatory.0 -> ../../../devices/platform/regulatory.0
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 sd8x-rfkill -> ../../../devices/platform/sd8x-rfkill
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 snd-soc-dummy -> ../../../devices/platform/snd-soc-dummy
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 sound -> ../../../devices/platform/sound
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 spdif-out -> ../../../devices/platform/spdif-out
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 switch-sw40x -> ../../../devices/platform/switch-sw40x
+lrwxrwxrwx 1 root root 0 Jun 28 06:32 thermal -> ../../../devices/platform/thermal
+[root@artik platform]# 
+
+
+/sys/class
+
+This directory contains every device class registered with the kernel. 
+Device classes describe a functional type of device. 
+Examples include input devices, network devices, and block devices.
+
+[root@artik sys]# ls class/
+backlight    graphics     net           scsi_device    tty
+bdi          hwmon        phy           scsi_disk      udc
+block        i2c-adapter  power_supply  scsi_generic   vc
+bluetooth    i2c-dev      ppp           scsi_host      video4linux
+bsg          ieee80211    pps           se             vtconsole
+bt_fm_nfc    input        ptp           sec            watchdog
+devcoredump  lcd          pwm           sound          xt_idletimer
+devfreq      mdio_bus     rc            spi_master     zram-control
+dma          mem          regulator     spidev
+drm          misc         rfkill        thermal
+gpio         mmc_host     rtc           trustonic_tee
+[root@artik sys]# 
+
+
+/sys/devices
+
+This directory contains the global device hierarchy of all devices on the system. 
+This directory also contains a platform directory and a system directory. 
+The platform directory contains peripheral devices specific to a particular platform such as device controllers. 
+The system directory contains non-peripheral devices such as CPUs and APICs.
+
+[root@artik sys]# ls devices/
+armv7_cortex_a9  platform  software  system  tracepoint  virtual
+[root@artik sys]# ls -al dev
+dev/     devices/ 
+[root@artik sys]# ls -al devices/platform/
+drwxr-xr-x  4 root root    0 Jun 28 06:32 Fixed MDIO bus.0
+drwxr-xr-x  3 root root    0 Jun 28 06:32 alarmtimer
+drwxr-xr-x  3 root root    0 Jun 28 06:32 artik_s3t9mf
+drwxr-xr-x  3 root root    0 Jun 28 06:32 artik_zb_power
+drwxr-xr-x 47 root root    0 Jun 28 06:32 c0000000.soc
+drwxr-xr-x  3 root root    0 Jun 28 06:32 c0010000.oscillator
+drwxr-xr-x  3 root root    0 Jun 28 06:32 c00e0000.busqos
+drwxr-xr-x  2 root root    0 Jun 28 09:24 camerasensor0
+drwxr-xr-x  2 root root    0 Jun 28 09:24 cpu
+drwxr-xr-x  3 root root    0 Jun 28 06:32 f0000000.0xf0000000
+drwxr-xr-x  4 root root    0 Jun 28 06:32 gpio_keys
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@10
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@4
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@5
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@6
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@7
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@8
+drwxr-xr-x  4 root root    0 Jun 28 06:32 i2c@9
+drwxr-xr-x  3 root root    0 Jun 28 06:32 nexell-pcm
+drwxr-xr-x  4 root root    0 Jun 28 06:32 nx-devfreq
+drwxr-xr-x  5 root root    0 Jun 28 06:32 nx-v4l2
+drwxr-xr-x  3 root root    0 Jun 28 06:32 panel-simple
+drwxr-xr-x  2 root root    0 Jun 28 09:24 power
+drwxr-xr-x  3 root root    0 Jun 28 06:32 psci
+drwxr-xr-x  4 root root    0 Jun 28 06:32 pwm-backlight
+drwxr-xr-x  4 root root    0 Jun 28 06:32 reg-dummy
+drwxr-xr-x  3 root root    0 Jun 28 06:32 regulatory.0
+drwxr-xr-x  3 root root    0 Jun 28 06:32 sd8x-rfkill
+drwxr-xr-x  3 root root    0 Jun 28 06:32 snd-soc-dummy
+drwxr-xr-x  6 root root    0 Jun 28 06:32 sound
+drwxr-xr-x  3 root root    0 Jun 28 06:32 spdif-out
+drwxr-xr-x  3 root root    0 Jun 28 06:32 switch-sw40x
+drwxr-xr-x  4 root root    0 Jun 28 06:32 thermal
+-rw-r--r--  1 root root 4096 Jun 28 06:32 uevent
+
+[root@artik sys]# ls -al devices/system/
+drwxr-xr-x 8 root root 0 Jun 28 06:32 clockevents
+drwxr-xr-x 4 root root 0 Jun 28 06:32 clocksource
+drwxr-xr-x 3 root root 0 Jun 28 09:24 container
+drwxr-xr-x 9 root root 0 Jun 28 06:32 cpu
+[root@artik sys]# 
+
+/sys/firmware
+
+This directory contains subdirectories with firmware objects and attributes.
+
+[root@artik sys]# ls firmware/
+devicetree  fdt
+
+
+/sys/module
+
+This directory contains subdirectories for each module that is loaded into the kernel, for example:
+
+ot@artik bus]# ls /sys/module/
+apparmor         firmware_class       nf_conntrack_ftp         sd8xxx
+auth_rpcgss      hci_uart             nf_conntrack_h323        sg
+autofs4          hid                  nf_conntrack_ipv4        sit
+block            hid_apple            nf_conntrack_irc         snd
+bluetooth        hidp                 nf_conntrack_netbios_ns  snd_pcm
+bnep             i2c_algo_bit         nf_conntrack_sane        snd_soc_rt5659
+bq25890_charger  ip_vs                nf_conntrack_snmp        snd_timer
+brd              ipv6                 nf_conntrack_tftp        spidev
+bt8xxx           kdb                  nfsd                     spurious
+btbcm            kernel               ntfs                     stmmac
+btmrvl           keyboard             nx_drm                   sunrpc
+btmrvl_sdio      kgdboc               platform_button          suspend
+btsdio           lockd                ppp_generic              sysrq
+cfg80211         loop                 ppp_mppe                 tcp_cubic
+configfs         lz4_compress         printk                   tun
+cpuidle          mali                 rc_core                  usb_storage
+debug_core       mlan                 rcupdate                 usbcore
+dm_mod           mmc_block            rcutree                  usbhid
+dns_resolver     module               rfcomm                   uvcvideo
+drm              mousedev             rfkill                   videobuf2_core
+drm_kms_helper   mrvl_sdio            rng_core                 vt
+dynamic_debug    netpoll              sch_htb                  workqueue
+ehci_hcd         nf_conntrack         scsi_mod                 xz_dec
+ext4             nf_conntrack_amanda  sd8x_rfkill              zram
+[root@artik bus]# 
+
+/sys/power
+
+The system power state can be controlled from this directory. 
+The disk attribute controls the method by which the system suspends to disk. 
+The state attribute allows a process to enter a low power state.
+
+[root@artik sys]# ls power/
+autosleep  pm_freeze_timeout  pm_test        state      wake_unlock
+pm_async   pm_print_times     pm_wakeup_irq  wake_lock  wakeup_count
+[root@artik sys]# 
+
+The sysctl Utility
+The sysctl utility can also be used to view or modify values to writable files in the /proc/sys directory. 
+To view the current kernel settings, enter:
+
+sysctl -a
+
+Changes made by using both echo and sysctl are lost when the system is rebooted. 
+To preserve custom settings, add them to the /etc/sysctl.conf file. Values added to this file take effect each time the system boots.
+
+/sys/kernel
+
+Various kernel related files
+
+[root@artik sys]# ls kernel/
+config  fscaps  notes      rcu_expedited  slab     uevent_helper
+debug   mm      profiling  security       tracing  uevent_seqnum
+
+[root@artik sys]# ls kernel/debug/
+asoc               dynamic_debug       mmc0       sched_features
+bdi                extfrag             mmc1       sleep_time
+bluetooth          fault_around_bytes  mmc2       stmmaceth
+c0000000.pl08xdma  gpio                nxe2000    suspend_stats
+c0001000.pl08xdma  hid                 pinctrl    tracing
+c0040000.dwc2otg   ieee80211           pm_qos     trustonic_tee
+clk                iio                 pwm        usb
+dma_buf            mali                regmap     wakeup_sources
+dri                memblock            regulator
+[root@artik sys]# 
+
+
+/sys/fs
+
+Contains files to control filesystems
+
+

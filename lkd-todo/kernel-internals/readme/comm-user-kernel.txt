@@ -1,0 +1,69 @@
+What is the best way to communicate a kernel module with a user space program?
+	http://amsekharkernel.blogspot.com/2012/01/what-are-ways-of-communication-bw-user.html
+	http://wiki.tldp.org/kernel_user_space_howto
+
+There are many ways to Communicate between the User space and Kernel Space, they are:
+
+	1. procfs
+		it was originally designed to export all kind of process information such as the current status of the process, 
+		or all open file descriptors to the user space.
+
+		provide information about the running system such as cpu information, 
+			information about interrupts, about the available memory or the version of the kernel.
+		information about "ide devices", "scsi devices" and "tty's".
+		networking information such as the arp table, network statistics or lists of used sockets
+		
+		
+	2. sysfs
+		it is clone of harware.
+		Sysfs was designed to represent the whole device model as seen from the Linux kernel. 
+		It contains information about devices, drivers and buses and their interconnections. 
+		
+		sys/block/ all known block devices such as hda/ ram/ sda/
+		sys/bus/ all registered buses. Each directory below bus/ holds by default two subdirectories:
+		device/ for all devices attached to that bus o driver/ for all drivers assigned with that bus. 
+		sys/class/ for each device type there is a subdirectory: for example /printer or /sound
+		sys/device/ all devices known by the kernel, organised by the bus they are connected to
+		sys/firmware/ files in this directory handle the firmware of some hardware devices
+		sys/fs/ files to control a file system, currently used by FUSE, a user space file system implementation
+		sys/kernel/ holds directories (mount points) for other filesystems such as debugfs, securityfs.
+		sys/module/ each kernel module loaded is represented with a directory.
+		sys/power/ files to handle the power state of some hardware 
+
+	3. configfs
+	4. Debugfs
+		Debugfs is a simple to use RAM based file system especially designed for debugging purposes.
+		Developers are encouraged to use debugfs instead of procfs in order to obtain some debugging information of kernel code.
+		mount -t debugfs none /sys/kernel/debug
+		
+	5. sysctl
+		The sysctl infrastructure is designed to configure kernel parameters at run time. 
+		The sysctl interface is heavily used by the Linux networking subsystem.
+
+	6. system call
+		System calls are used when a user space program wants to use some data or some service provided by the Linux kernel.
+		open, read, write, poll, epoll, ioctl, select etc.
+	
+	7. Sockets -> Tcp and udp sockets
+
+	8. Netlink Sockets
+		Netlink is a special IPC used for transferring information between kernel and user space processes,
+		and provides a full-duplex communication.
+
+	9. Sending Signals from the Kernel to the User Space
+		kernel module that sends a signal to a user space process. The kernel needs to know the PID of the user space process. 
+		Therefore the user space process writes its PID in the debugfs file signalconfpid.
+		And user space program that receives the signal.
+
+	10. Upcall
+		The upcall functionality of the Linux kernel allows a kernel module to invoke a function in user space.
+		It is possible to start a program in user space, and give it some command line arguments, as well as setting 
+		environment variables. 
+
+		usermodehelper.c        kernel module that starts a process
+		callee.c        	user space program that will be executed on behalf of the kernel
+	11. mmap
+		Memory mapping is the only way to transfer data between user and kernel spaces that does not involve explicit copying,
+		and is the fastest way to handle large amounts of data.
+
+	

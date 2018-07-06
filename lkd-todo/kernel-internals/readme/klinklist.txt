@@ -1,0 +1,12 @@
+Build the driver by using Makefile (sudo make)
+Load the driver using sudo insmod driver.ko
+sudo su
+To trigger interrupt read device file (cat /dev/etx_device)
+Now see the Dmesg (dmesg)
+
+By this time there is no nodes available.
+So now write the value to driver using echo 10 > /dev/etx_device
+By this time, One node has been added to the linked list.
+To test that read the device file using cat /dev/etx_device
+Now see the Dmesg (dmesg)
+

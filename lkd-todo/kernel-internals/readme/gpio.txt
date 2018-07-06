@@ -1,0 +1,280 @@
+Artik 530 and 710 GPIO header:
+
+on-board device 	sysfs Mapping 	Notes
+SW403 				GPIO 30 		nearest board edge, next to red LED
+SW404 				GPIO 32 		next to blue LED
+Red LED 			GPIO 28 	 
+Blue LED 			GPIO 38 	 
+GPIO0 				GPIO 128 		Arduino pin 2
+GPIO1 				GPIO 129 		Arduino pin 3
+GPIO2 				GPIO 130 		Arduino pin 4
+GPIO3 				GPIO 46 		Arduino pin 5
+GPIO4 				GPIO 14 		Arduino pin 6
+GPIO5 				GPIO 41 		Arduino pin 7
+GPIO6 				GPIO 25
+
+for more information :
+	cat /sys/kernel/debug/gpio
+
+ARTIK 530/710 base address:
+    gpio0 = 0xC001_A000
+
+	pin programing links:
+	https://developer.artik.io/documentation/developer-guide/gpio/kernel-gpio.html#gpio-control-through-sysfs
+	https://developer.artik.io/documentation/artik/tutorials/read-a-button.html
+	https://developer.artik.io/documentation/artik/tutorials/blink-an-led.html
+	https://developer.artik.io/documentation/developer-guide/gpio/kernel-gpio.html
+
+Memory Mapped GPIO's:
+Base address : 0xc001_0000
+
+Register		offset		Description						Reset Value
+GPIORSTENB		0208H		GPIO reset enable register		0x0000_0003
+GPIOWKENB		020CH		gpio wakeup enable register		0x0000_0003
+INTPEND			0220H		interrupt pending register		0x0000_0000
+
+I/O Ports and I/O Memory
+
+	Using I/O Ports
+	Using I/O Memory
+	Optimization
+
+	Every peripheral device is controlled by writing and reading its registers.
+	Most of the time a device has several registers.
+	They are accessed at consecutive addresses, either in the memory address space or in the I/O address space.
+	
+	At the hardware level, there is no conceptual difference between memory regions and I/O regions.
+	Both of them are accessed by asserting electrical signals on the address bus and control bus and by reading from or writing to the data bus.
+
+	Some CPU manufacturers implement a single address space in their chips.
+	Some others decided that peripheral devices are different from memory.
+	Therefore deserve a separate address space
+	Some processors have separate read and write electrical lines for I/O ports, and special CPU instructions to access ports
+
+	Because peripheral devices are built to fit a peripheral bus, 
+	Linux implements the concept of I/O ports on all computer platforms it runs on, even on platforms where the CPU implements a single address space.
+
+	communicate with devices is through memory-mapped registers and device memory.
+	Both are called I/O memory because the difference between registers and memory is transparent to software.
+	
+	I/O memory is simply a region of RAM-like locations that the device makes available to the processor over the bus.
+	Information about I/O memory registered resources is available in /proc/iomem
+
+	API sequence:
+	check_mem_region(reset, 84);
+	request_mem_region(reset, 84, “mydev”);
+	virtual_reset = ioremap(reset, 84);
+	writeb(0x40, virtual_reset + 83);
+	iounmap(virtual_reset);
+	release_mem_region(reset, 84);
+
+API:
+	request_mem_region()
+		allows to tell the kernel that your driver is going to use this range of I/O addresses, 
+		which will prevent other drivers to make an overlapping call to request_mem_region.
+		
+	ioremap()
+	
+	What you are trying to do is accessing what is called IO memory. 
+	To "allocate" such an area, you need to call 
+		struct resource *request_mem_region(unsigned long start, unsigned long len, char *name). 
+		
+	Before your driver can access it, you have to assign it a virtual address, this is done with a call to 
+		void *ioreamp(unsigned long phys_addr, unsigned long size).
+		
+	To ensure that your driver will then work on different architectures/platforms, 
+	be sure to use some accessor function to such areas ( ioread8/16/32 or iowrite8/16/32 and all of their variants).
+
+	cat /proc/iomem
+
+	optimization:
+	A driver must therefore ensure that no caching is performed and no read or write reordering takes place when accessing registers.
+	The solution to compiler optimization and hardware reordering is to place a memory barrier 
+		between operations that must be visible to the hardware in a particular order.
+		void barrier(void);
+		void rmb(void);
+		void wmb(void);
+		void mb(void);
+	
+ARTIK 530/710 Board
+Our goal is to read an on-board switch, mapped as
+
+    sysfs GPIO 30 for SW403 (next to board edge, alongside Red LED)
+    sysfs GPIO 32 for SW404 (alongside Blue LED)
+
+
+pinmux info:
+
+function: /soc/pinctrl@C0010000/nand-default/nand-cle, groups = [ gpiob-11 ]
+function: /soc/pinctrl@C0010000/nand-default/nand-ale, groups = [ gpiob-12 ]
+function: /soc/pinctrl@C0010000/nand-default/nand-bus-width8, groups = [ gpiob-13 gpiob-15 gpiob-17 gpiob-19 gpiob-20 gpiob-21 gpiob-22 gpiob-23 ]
+function: /soc/pinctrl@C0010000/nand-default/nand-rnb, groups = [ gpiob-14 ]
+function: /soc/pinctrl@C0010000/nand-default/nand-noe, groups = [ gpiob-16 ]
+function: /soc/pinctrl@C0010000/nand-default/nand-nwe, groups = [ gpiob-18 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-txd, groups = [ gpioe-7 gpioe-8 gpioe-9 gpioe-10 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-rxd, groups = [ gpioe-14 gpioe-15 gpioe-16 gpioe-17 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-txen, groups = [ gpioe-11 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-rxen, groups = [ gpioe-19 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-mdc, groups = [ gpioe-20 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-mdio, groups = [ gpioe-21 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-rxclk, groups = [ gpioe-18 ]
+function: /soc/pinctrl@C0010000/gmac_pins/gmac-txclk, groups = [ gpioe-24 ]
+function: /soc/pinctrl@C0010000/sdmmc0-cclk, groups = [ gpioa-29 ]
+function: /soc/pinctrl@C0010000/sdmmc0-cmd, groups = [ gpioa-31 ]
+function: /soc/pinctrl@C0010000/sdmmc0-bus-width4, groups = [ gpiob-1 gpiob-3 gpiob-5 gpiob-7 ]
+function: /soc/pinctrl@C0010000/sdmmc1-cclk, groups = [ gpiod-22 ]
+function: /soc/pinctrl@C0010000/sdmmc1-cmd, groups = [ gpiod-23 ]
+function: /soc/pinctrl@C0010000/sdmmc1-bus-width4, groups = [ gpiod-24 gpiod-25 gpiod-26 gpiod-27 ]
+function: /soc/pinctrl@C0010000/sdmmc2-cclk, groups = [ gpioc-18 ]
+function: /soc/pinctrl@C0010000/sdmmc2-cmd, groups = [ gpioc-19 ]
+function: /soc/pinctrl@C0010000/sdmmc2-bus-width4, groups = [ gpioc-20 gpioc-21 gpioc-22 gpioc-23 ]
+function: /soc/pinctrl@C0010000/sdmmc2-bus-width8, groups = [ gpioe-21 gpioe-22 gpioe-23 gpioe-24 ]
+function: /soc/pinctrl@C0010000/serial0, groups = [ gpiod-14 gpiod-18 ]
+function: /soc/pinctrl@C0010000/serial1, groups = [ gpiod-15 gpiod-19 ]
+function: /soc/pinctrl@C0010000/serial1_flow_cts, groups = [ gpioc-5 ]
+function: /soc/pinctrl@C0010000/serial1_flow_rts, groups = [ gpioc-6 ]
+function: /soc/pinctrl@C0010000/serial2, groups = [ gpiod-16 gpiod-20 ]
+function: /soc/pinctrl@C0010000/serial3, groups = [ gpiod-17 gpiod-21 ]
+function: /soc/pinctrl@C0010000/serial4, groups = [ gpiob-28 gpiob-29 ]
+function: /soc/pinctrl@C0010000/serial5, groups = [ gpiob-30 gpiob-31 ]
+function: /soc/pinctrl@C0010000/i2c0_sda_dft, groups = [ gpiod-3 ]
+function: /soc/pinctrl@C0010000/i2c0_scl_dft, groups = [ gpiod-2 ]
+function: /soc/pinctrl@C0010000/i2c0_sda_gpio, groups = [ gpiod-3 ]
+function: /soc/pinctrl@C0010000/i2c0_scl_gpio, groups = [ gpiod-2 ]
+function: /soc/pinctrl@C0010000/i2c1_sda_dft, groups = [ gpiod-5 ]
+function: /soc/pinctrl@C0010000/i2c1_scl_dft, groups = [ gpiod-4 ]
+function: /soc/pinctrl@C0010000/i2c1_sda_gpio, groups = [ gpiod-5 ]
+function: /soc/pinctrl@C0010000/i2c1_scl_gpio, groups = [ gpiod-4 ]
+function: /soc/pinctrl@C0010000/i2c2_sda_dft, groups = [ gpiod-7 ]
+function: /soc/pinctrl@C0010000/i2c2_scl_dft, groups = [ gpiod-6 ]
+function: /soc/pinctrl@C0010000/i2c2_sda_gpio, groups = [ gpiod-7 ]
+function: /soc/pinctrl@C0010000/i2c2_scl_gpio, groups = [ gpiod-6 ]
+function: /soc/pinctrl@C0010000/pwm0, groups = [ gpiod-1 ]
+function: /soc/pinctrl@C0010000/pwm1, groups = [ gpioc-13 ]
+function: /soc/pinctrl@C0010000/pwm2, groups = [ gpioc-14 ]
+function: /soc/pinctrl@C0010000/pwm3, groups = [ gpiod-0 ]
+function: /soc/pinctrl@C0010000/i2s0, groups = [ gpiod-9 gpiod-10 gpiod-11 gpiod-12 gpiod-13 ]
+function: /soc/pinctrl@C0010000/i2s1, groups = [ gpioa-28 gpioa-30 gpiob-0 gpiob-6 gpiob-9 ]
+function: /soc/pinctrl@C0010000/i2s2/i2s2-mclk, groups = [ gpioa-28 ]
+function: /soc/pinctrl@C0010000/i2s2/i2s2-other, groups = [ gpiob-2 gpiob-4 gpiob-8 gpiob-10 ]
+function: /soc/pinctrl@C0010000/spi0, groups = [ gpioc-29 gpioc-30 gpioc-31 gpiod-0 ]
+function: /soc/pinctrl@C0010000/spi1, groups = [ gpioe-14 gpioe-15 gpioe-18 gpioe-19 ]
+function: /soc/pinctrl@C0010000/spi2, groups = [ gpioc-9 gpioc-10 gpioc-11 gpioc-12 ]
+function: /soc/pinctrl@C0010000/spdiftx, groups = [ gpioc-25 ]
+function: /soc/pinctrl@C0010000/vid0-data-clk, groups = [ gpiod-28 gpiod-29 gpiod-30 gpiod-31 gpioe-0 gpioe-1 gpioe-2 gpioe-3 gpioe-4 ]
+function: /soc/pinctrl@C0010000/vid0-sync, groups = [ gpioe-5 gpioe-6 ]
+function: /soc/pinctrl@C0010000/vid1-data-clk, groups = [ gpioa-30 gpiob-0 gpiob-2 gpiob-4 gpiob-6 gpiob-8 gpiob-9 gpiob-10 gpioa-28 ]
+function: /soc/pinctrl@C0010000/vid1-sync, groups = [ gpioe-13 gpioe-7 ]
+function: /soc/pinctrl@C0010000/vid2-data-clk, groups = [ gpioc-17 gpioc-18 gpioc-19 gpioc-20 gpioc-21 gpioc-22 gpioc-23 gpioc-24 gpioc-14 ]
+function: /soc/pinctrl@C0010000/vid2-sync, groups = [ gpioc-15 gpioc-16 ]
+function: /soc/pinctrl@C0010000/dp-rgb-vclk, groups = [ gpioa-0 ]
+function: /soc/pinctrl@C0010000/dp-rgb-vsync, groups = [ gpioa-25 ]
+function: /soc/pinctrl@C0010000/dp-rgb-hsync, groups = [ gpioa-26 ]
+function: /soc/pinctrl@C0010000/dp-rgb-de, groups = [ gpioa-27 ]
+function: /soc/pinctrl@C0010000/dp-rgb-B, groups = [ gpioa-1 gpioa-2 gpioa-3 gpioa-4 gpioa-5 gpioa-6 gpioa-7 gpioa-8 ]
+function: /soc/pinctrl@C0010000/dp-rgb-G, groups = [ gpioa-9 gpioa-10 gpioa-11 gpioa-12 gpioa-13 gpioa-14 gpioa-15 gpioa-16 ]
+function: /soc/pinctrl@C0010000/dp-rgb-R, groups = [ gpioa-17 gpioa-18 gpioa-19 gpioa-20 gpioa-21 gpioa-22 gpioa-23 gpioa-24 ]
+function: /soc/pinctrl@C0010000/cfg-wlanhostwake, groups = [ alive-3 ]
+function: /soc/pinctrl@C0010000/key_pwr, groups = [ alive-0 ]
+function: /soc/pinctrl@C0010000/pmic_irq, groups = [ alive-5 ]
+function: /soc/pinctrl@C0010000/touchpanel-irq, groups = [ gpiob-22 ]
+function: /soc/pinctrl@C0010000/tsp-irq, groups = [ gpiob-8 ]
+function: /soc/pinctrl@C0010000/tsp-reset, groups = [ gpioc-25 ]	
+
+[root@artik gpio]# cat /proc/iomem 
+71000000-aeffffff : System RAM
+  71008000-71c3aaa3 : Kernel code
+  71cc6000-71e34cef : Kernel data
+c0000000-c0000fff : /soc/amba/pl08xdma@c0000000
+  c0000000-c0000fff : pl08xdmac
+c0001000-c0001fff : /soc/amba/pl08xdma@c0001000
+  c0001000-c0001fff : pl08xdmac
+c0010800-c00109ff : /soc/pinctrl@C0010000
+c0011000-c00110ff : /soc/nexell-usbphy@c0012000
+c0012000-c0012002 : /soc/reset@c0012000
+c0018000-c0018fff : /soc/pwm@c0018000
+c0019000-c0019fff : /soc/watchdog@c0019000
+c001a000-c001afff : /soc/pinctrl@C0010000
+c001b000-c001bfff : /soc/pinctrl@C0010000
+c001c000-c001cfff : /soc/pinctrl@C0010000
+c001d000-c001dfff : /soc/pinctrl@C0010000
+c001e000-c001efff : /soc/pinctrl@C0010000
+c0020000-c002ffff : /soc/ohci@c0020000
+c0030000-c003ffff : /soc/ehci@c0030000
+c0040000-c0050fff : /soc/dwc2otg@c0040000
+c0053000-c0053fff : /soc/adc@c0053000
+c005f000-c005ffff : /soc/spi@c005f000
+  c005f000-c005ffff : ssp-pl022
+c0060000-c0061fff : /soc/ethernet@c0060000
+c0062000-c0062fff : /soc/dw_mmc@c0062000
+c0066000-c0066fff : /soc/scaler@c0066000
+c0068000-c0068fff : /soc/dw_mmc@c0068000
+c0069000-c0069fff : /soc/dw_mmc@c0069000
+c006d000-c006dfff : /soc/serial@c006d000
+  c006d000-c006dfff : /soc/serial@c006d000
+c00a0000-c00a0fff : /soc/serial@c00a0000
+  c00a0000-c00a0fff : /soc/serial@c00a0000
+c00a2000-c00a2fff : /soc/serial@c00a2000
+  c00a2000-c00a2fff : /soc/serial@c00a2000
+c00a3000-c00a3fff : /soc/serial@c00a3000
+  c00a3000-c00a3fff : /soc/serial@c00a3000
+c00e0000-c00e0fff : /busqos
+[root@artik gpio]#
+
+
+What is the difference between module_init and subsys_initcall while initializing the driver?
+
+The difference relates to timing, or more precisely, order of execution. 
+That is, the procedure declared as subsys_initcall is guaranteed to be executed before the procedure declared as module_init. 
+This ordering ensures that subsystem and platform drivers are initialized before device drivers try to utilize the former's functionality 
+(e.g. a device driver registers as a subsystem device).
+
+The actual macro definition for each depends on if the kernel is configured for (loadable) modules or not. 
+The definition for these macros (and other init macros) can be found in include/linux/init.h
+
+Note that subsys_initcall() can only be used by a built-in (statically linked) module.
+module_init can be used by either built-in or loadable modules.
+
+Linux Kernel Modules: When to use try_module_get / module_put?
+find -type f -name *.c | xargs grep -l try_module_get | sort -u | xargs grep -l register_chrdev | sort -u | grep -c .
+
+How to get gpio number and export it:
+	gpio_number = (gpio_bank - 1) * 32 + gpio_pin
+
+	echo gpio_number > /sys/class/gpio/export
+	echo out > /sys/class/gpio/gpio_number/direction
+	echo 1 > /sys/class/gpio/gpio_number/value
+
+Linux Device Tree Naming Convention
+	power-gpio = <&gpio-bank gpio_pin gpio-polarity>
+
+Memory mapping og gpio:
+
+	GPIO_BASE is a physical address and not a virtual one
+	
+	void __iomem *io = ioremap(GPIO_BASE, SZ_4K);
+	writel(GPIO_BASE+PORTA_OFFSET, io + 0x0004);
+
+programing:
+
+    #define GPIO_ADDR 0x???????? // I do not know what to put here
+    #define GPIO_BLOCK ??        // and here
+
+    ...
+
+    this->fd = open("/dev/mem",O_RDWR);
+    if (this->fd < 0) {
+    	std::cerr << "Can't open /dev/mem" << std::endl;
+    	exit(EXIT_FAILURE);
+    }
+    	
+    gpioAddress = (unsigned long*)mmap(NULL, GPIO_BLOCK, PROT_READ | PROT_WRITE, MAP_SHARED, this->fd, GPIO_ADDR);
+    close(this->fd);
+
+    ...
+
+    unsigned long aGpio = whatever you want
+    unsigned long value = *(gpioAddress + 1);
+    return (value & (1 < aGpio));
+
+

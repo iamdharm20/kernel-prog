@@ -1,0 +1,52 @@
+https://www.kernel.org/pub/linux/kernel/people/mochel/doc/text/class.txt
+read: binding.txt, bus.txt, class.txt, device.txt ,driver.txt ,extension.txt ,interface.txt, overview.txt, platform.txt
+
+SoC:
+Driver:
+Module:
+
+Linux driver subsytem:
+	Frameworks and libraries; common code implementing a standard protocol, interface or behavior 
+	Providers are Linux kernel drivers that plug into the framework and provide access to hardware 
+	Consumers are Linux kernel drivers or subsystems that access the framework through a common API 
+	A Linux driver can be both a provider and a consumer. 
+	Some common subsystems:
+		genirq , clocksource , clockevent , pinctrl , regulator , clk , cpufreq , cpuidle , pm runtime , 
+		genpd , alsa/asoc , v4l2, Dma, USb etc.
+
+Device driver Model: Buses, Devices, Classes, kobject, kset, ktype 
+
+The driver framework breaks all things down into buses, devices and classes. Using these primitives, it controls how drivers 
+	are matched up with physical and virtual devices, and it shows the user how all of these things are interconnected.
+
+bus can be described as something with devices connected to it. Examples of buses are PCI, USB, i2c, PCMCIA and SCSI.
+	sysfs directory /sys/bus/.
+
+Devices are physical or virtual devices that reside on a bus and bound to a drivers. 
+	they are added to the device class that the driver belongs to.
+	They are represented by the struct device definition and are created by the bus when the bus sees they are present in the system.
+	sysfs directory /sys/bus/BUS_TYPE/devices/.
+
+A device class describes a type of device, like an audio, input, usb, i2c, network device etc.
+	Each device class defines a set of semantics and a programming interface that devices of that class adhere to. 
+	Device drivers are the implemention of that programming interface for a particular device on a particular bus.
+
+	Classes are things that provide a function to the user. They are not bus- or device-specific things but functionally look to the user 
+	as the same type of device. Examples of classes are audio devices; pointing devices, such as mice and touchpads; keyboards; 
+	joysticks; IDE disks; and tty devices. The kernel always has had these kinds of devices, and they traditionally have been 
+	grouped together by major/minor number range, so the user can access them easily. 
+	Classes are represented in the kernel with the struct device_class definition, and they can be seen as subdirectories of the
+	sysfs directory /sys/class/.
+
+Kobject: A kobject is an object of type struct kobject. Kobjects have a name and a reference count. 
+	 A kobject also has a parent pointer (allowing objects to be arranged into hierarchies), a specific type, 
+	 and, usually, a representation in the sysfs virtual filesystem.
+
+Ktype: A ktype is the type of object that embeds a kobject.  Every structure that embeds a kobject needs a corresponding ktype.
+	The ktype controls what happens to the kobject when it is created and destroyed.
+
+Kset: A kset is a group of kobjects.  These kobjects can be of the same ktype or belong to different ktypes.
+	The kset is the basic container type for collections of kobjects. Ksets contain their own kobjects, but you can
+	safely ignore that implementation detail as the kset core code handles this kobject automatically.
+
+

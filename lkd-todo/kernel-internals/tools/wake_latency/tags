@@ -1,0 +1,173 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+APP_NAME	wl_test.c	29;"	d	file:
+ARRAY_SIZE	wl_test.c	31;"	d	file:
+CMD_MAXLEN	wake_latency.h	22;"	d
+DEFAULT_CPU_LOAD	wl_test.c	33;"	d	file:
+DEFAULT_KERN_TEST_NUM	wake_latency_device.h	16;"	d
+DEFAULT_TASK_TYPE	wake_latency.h	25;"	d
+DEFAULT_USER_TEST_NUM	wake_latency_device.h	17;"	d
+DEVICE_MAGIC	wake_latency_device.h	14;"	d
+DEVICE_MAJOR	wake_latency_device.h	13;"	d
+DEVICE_NAME	wake_latency.h	20;"	d
+DEV_NAME	wl_test.c	28;"	d	file:
+IOCTL_RUN	wake_latency_device.h	59;"	d
+IOCTL_SELECT_SUBTYPE	wake_latency_device.h	61;"	d
+IOCTL_SELECT_TASK	wake_latency_device.h	60;"	d
+IOCTL_SET_ITERATIONS	wake_latency_device.h	63;"	d
+IOCTL_SET_START_TYPE	wake_latency_device.h	62;"	d
+LOCAL_FORCE_STATIC_EXECUTABLE	android/wl_test/Android.mk	/^LOCAL_FORCE_STATIC_EXECUTABLE := true$/;"	m
+LOCAL_MODULE	android/wl_test/Android.mk	/^LOCAL_MODULE:= wl_test$/;"	m
+LOCAL_MODULE_PATH	android/wl_test/Android.mk	/^LOCAL_MODULE_PATH := $(TARGET_OUT_EXECUTABLES)$/;"	m
+LOCAL_MODULE_TAGS	android/wl_test/Android.mk	/^LOCAL_MODULE_TAGS := debug eng$/;"	m
+LOCAL_PATH	android/wl_test/Android.mk	/^LOCAL_PATH:= $(call my-dir)$/;"	m
+LOCAL_SRC_FILES	android/wl_test/Android.mk	/^LOCAL_SRC_FILES:= wl_test.c$/;"	m
+LOCAL_STATIC_LIBRARIES	android/wl_test/Android.mk	/^LOCAL_STATIC_LIBRARIES := libc libm$/;"	m
+MSG_MAXLEN	wake_latency.h	23;"	d
+NUM_TASKS	wake_latency.c	301;"	d	file:
+TASK_NAME_MAXLEN	wake_latency_device.h	19;"	d
+WAKE_LATENCY_DEVICE_H_	wake_latency_device.h	11;"	d
+WAKE_LATENCY_H	wake_latency.h	10;"	d
+WLS_DEFAULT	wake_latency_device.h	/^	WLS_DEFAULT = 0,$/;"	e	enum:task_subtype
+WLS_MAX	wake_latency_device.h	/^	WLS_MAX$/;"	e	enum:task_subtype
+WLS_WORKQUEUE_GLOBAL	wake_latency_device.h	/^	WLS_WORKQUEUE_GLOBAL,   \/* use global work queue *\/$/;"	e	enum:task_subtype
+WLS_WORKQUEUE_SELF	wake_latency_device.h	/^	WLS_WORKQUEUE_SELF,		\/* use local work queue *\/$/;"	e	enum:task_subtype
+WL_IOCTL_RUN	wake_latency_device.h	/^	WL_IOCTL_RUN = 1,$/;"	e	enum:ioctl_cmd_type
+WL_IOCTL_SELECT_SUBTYPE	wake_latency_device.h	/^	WL_IOCTL_SELECT_SUBTYPE,$/;"	e	enum:ioctl_cmd_type
+WL_IOCTL_SELECT_TASK	wake_latency_device.h	/^	WL_IOCTL_SELECT_TASK,$/;"	e	enum:ioctl_cmd_type
+WL_IOCTL_SET_ITERATIONS	wake_latency_device.h	/^	WL_IOCTL_SET_ITERATIONS,$/;"	e	enum:ioctl_cmd_type
+WL_IOCTL_SET_START_TYPE	wake_latency_device.h	/^	WL_IOCTL_SET_START_TYPE,$/;"	e	enum:ioctl_cmd_type
+WL_START_IRQ	wake_latency_device.h	/^	WL_START_IRQ,		\/* hook up some irq to do so, not supported yet *\/$/;"	e	enum:test_start_type
+WL_START_PROCESS	wake_latency_device.h	/^	WL_START_PROCESS,   \/* start the test in the caller process *\/$/;"	e	enum:test_start_type
+WL_START_TIMER	wake_latency_device.h	/^	WL_START_TIMER,		\/* within a timer context, not supported yet *\/$/;"	e	enum:test_start_type
+WL_STATE_IDLE	wake_latency.h	/^	WL_STATE_IDLE = 0,$/;"	e	enum:state_type
+WL_STATE_RUNNING	wake_latency.h	/^	WL_STATE_RUNNING$/;"	e	enum:state_type
+WL_TYPE_KTHREAD	wake_latency_device.h	/^	WL_TYPE_KTHREAD,$/;"	e	enum:task_type
+WL_TYPE_MAX	wake_latency_device.h	/^	WL_TYPE_MAX$/;"	e	enum:task_type
+WL_TYPE_TASKLET	wake_latency_device.h	/^	WL_TYPE_TASKLET,$/;"	e	enum:task_type
+WL_TYPE_WORKQUEUE	wake_latency_device.h	/^	WL_TYPE_WORKQUEUE = 0,$/;"	e	enum:task_type
+__UNUSED	wake_latency.h	27;"	d
+avg	wake_latency_device.h	/^	uint32_t avg;$/;"	m	struct:test_result
+busy	wake_latency.h	/^	atomic_t busy;$/;"	m	struct:task_class
+cdev	wake_latency.h	/^	struct cdev cdev;$/;"	m	struct:latency_device	typeref:struct:latency_device::cdev
+cflags	Makefile	/^cflags = -Wall -lpthread -lm -g$/;"	m
+complete	wake_latency.h	/^	void (*complete)(unsigned long);$/;"	m	struct:task_class
+complete_data	wake_latency.h	/^	unsigned long complete_data;$/;"	m	struct:task_class
+cpu_load	wl_test.c	/^static struct cpu_load_item *cpu_load;$/;"	v	typeref:struct:cpu_load_item	file:
+cpu_load_item	wl_test.c	/^struct cpu_load_item {$/;"	s	file:
+device	wake_latency.c	/^static struct latency_device *device;$/;"	v	typeref:struct:latency_device	file:
+device	wake_latency.h	/^	struct device *device;$/;"	m	struct:latency_device	typeref:struct:latency_device::device
+devno	wake_latency.h	/^	dev_t devno;$/;"	m	struct:latency_device
+done	wake_latency.c	/^	struct completion done;$/;"	m	struct:kthread_data_s	typeref:struct:kthread_data_s::completion	file:
+done_exec	wl_test.c	/^sem_t wait_invoke, done_exec;$/;"	v
+end_load	wl_test.c	/^int end_load()$/;"	f
+err_cnt	wake_latency_device.h	/^	uint32_t err_cnt; 	\/* invalid data *\/$/;"	m	struct:test_result
+exec_time	wake_latency.h	/^	struct timeval exec_time;$/;"	m	struct:test_trace_entry	typeref:struct:test_trace_entry::timeval
+exec_time	wl_test.c	/^static struct timeval invoke_time, exec_time;$/;"	v	typeref:struct:	file:
+exit	wl_test.c	/^	int exit;$/;"	m	struct:cpu_load_item	file:
+g_num_threads	wl_test.c	/^static int g_num_threads;$/;"	v	file:
+has_request	wake_latency.c	/^	int has_request, need_exit;$/;"	m	struct:kthread_data_s	file:
+id	wl_test.c	/^	int id;$/;"	m	struct:cpu_load_item	file:
+init	wake_latency.h	/^	int (*init)(struct task_class *task, void (*complete)(unsigned long));$/;"	m	struct:task_class
+invoke	wake_latency.h	/^	int (*invoke)(struct task_class *task, unsigned long data);$/;"	m	struct:task_class
+invoke_time	wake_latency.h	/^	struct timeval invoke_time;$/;"	m	struct:test_trace_entry	typeref:struct:test_trace_entry::timeval
+invoke_time	wl_test.c	/^static struct timeval invoke_time, exec_time;$/;"	v	typeref:struct:timeval	file:
+ioctl_cmd_type	wake_latency_device.h	/^enum ioctl_cmd_type {$/;"	g
+iter_num	wake_latency.h	/^	int iter_num;$/;"	m	struct:latency_test_class
+kthread_data	wake_latency.c	/^} kthread_data;$/;"	v	typeref:struct:kthread_data_s	file:
+kthread_data_s	wake_latency.c	/^static struct kthread_data_s {$/;"	s	file:
+kthread_func	wake_latency.c	/^static int kthread_func(void *arg)$/;"	f	file:
+kthread_init	wake_latency.c	/^int kthread_init(struct task_class *task, void (*complete)(unsigned long))$/;"	f
+kthread_invoke	wake_latency.c	/^int kthread_invoke(struct task_class *task, unsigned long complete_data)$/;"	f
+kthread_print_priority	wake_latency.c	/^void kthread_print_priority(struct task_struct *thread)$/;"	f
+kthread_remove	wake_latency.c	/^int kthread_remove(struct task_class *task)$/;"	f
+latency_device	wake_latency.h	/^struct latency_device {$/;"	s
+latency_test_class	wake_latency.h	/^struct latency_test_class {$/;"	s
+latency_thread	wl_test.c	/^void *latency_thread(void * parg)$/;"	f
+latency_thread_exit	wl_test.c	/^int latency_thread_exit = 0;$/;"	v
+load_thread	wl_test.c	/^void *load_thread(void *parg)$/;"	f
+lock	wake_latency.h	/^	spinlock_t lock;$/;"	m	struct:task_class
+main	wl_test.c	/^int main(int argc, char *argv[])$/;"	f
+max	wake_latency_device.h	/^	uint32_t max;$/;"	m	struct:test_result
+max_usec	wl_test.c	/^unsigned long sum_usec = 0, sum_sq_usec = 0, max_usec = 0;$/;"	v
+n	wake_latency_device.h	/^	uint32_t n;$/;"	m	struct:test_result
+name	wake_latency.h	/^	char name[TASK_NAME_MAXLEN];$/;"	m	struct:task_class
+name	wl_test.c	/^	char name[TASK_NAME_MAXLEN];$/;"	m	struct:test_entry	file:
+need_exit	wake_latency.c	/^	int has_request, need_exit;$/;"	m	struct:kthread_data_s	file:
+num_sample	wl_test.c	/^static int num_sample = 0;$/;"	v	file:
+remove	wake_latency.h	/^	int (*remove)(struct task_class *task);$/;"	m	struct:task_class
+set_load_thread_priority	wl_test.c	/^void set_load_thread_priority(pthread_attr_t *attr) {$/;"	f
+set_thread_priority	wl_test.c	/^void set_thread_priority(pthread_attr_t *attr,$/;"	f
+set_work_thread_priority	wl_test.c	/^void set_work_thread_priority(pthread_attr_t *attr) {$/;"	f
+size	wake_latency_device.h	/^	uint32_t size;$/;"	m	struct:test_result
+start_load	wl_test.c	/^int start_load(int num_threads)$/;"	f
+start_type	wake_latency.h	/^	enum test_start_type start_type;$/;"	m	struct:latency_test_class	typeref:enum:latency_test_class::test_start_type
+state_type	wake_latency.h	/^enum state_type {$/;"	g
+subtype	wake_latency.h	/^	enum task_subtype subtype; \/* copied from latency_test_class *\/$/;"	m	struct:task_class	typeref:enum:task_class::task_subtype
+subtype	wake_latency.h	/^	enum task_subtype subtype;$/;"	m	struct:latency_test_class	typeref:enum:latency_test_class::task_subtype
+subtype	wl_test.c	/^	enum task_subtype subtype;$/;"	m	struct:test_entry	typeref:enum:test_entry::task_subtype	file:
+sum_sq_usec	wl_test.c	/^unsigned long sum_usec = 0, sum_sq_usec = 0, max_usec = 0;$/;"	v
+sum_usec	wl_test.c	/^unsigned long sum_usec = 0, sum_sq_usec = 0, max_usec = 0;$/;"	v
+task	wl_test.c	/^	enum task_type task;$/;"	m	struct:test_entry	typeref:enum:test_entry::task_type	file:
+task_class	wake_latency.h	/^struct task_class {$/;"	s
+task_collection	wake_latency.c	/^struct task_class task_collection[WL_TYPE_MAX] = {$/;"	v	typeref:struct:task_class
+task_data	wake_latency.h	/^	void *task_data;$/;"	m	struct:task_class
+task_id	wake_latency.h	/^	int task_id;$/;"	m	struct:latency_test_class
+task_ptr	wake_latency.c	/^	struct task_class *task_ptr;$/;"	m	struct:kthread_data_s	typeref:struct:kthread_data_s::task_class	file:
+task_ptr	wake_latency.c	/^	struct task_class *task_ptr;$/;"	m	struct:tasklet_data_s	typeref:struct:tasklet_data_s::task_class	file:
+task_ptr	wake_latency.c	/^	struct task_class *task_ptr;$/;"	m	struct:work_data_s	typeref:struct:work_data_s::task_class	file:
+task_subtype	wake_latency_device.h	/^enum task_subtype {$/;"	g
+task_type	wake_latency_device.h	/^enum task_type {$/;"	g
+tasklet	wake_latency.c	/^	struct tasklet_struct tasklet;$/;"	m	struct:tasklet_data_s	typeref:struct:tasklet_data_s::tasklet_struct	file:
+tasklet_data	wake_latency.c	/^} tasklet_data;$/;"	v	typeref:struct:tasklet_data_s	file:
+tasklet_data_s	wake_latency.c	/^static struct tasklet_data_s {$/;"	s	file:
+tasklet_func	wake_latency.c	/^static void tasklet_func(unsigned long data)$/;"	f	file:
+tasklet_initialize	wake_latency.c	/^int tasklet_initialize(struct task_class *task, void (*complete)(unsigned long))$/;"	f
+tasklet_invoke	wake_latency.c	/^int tasklet_invoke(struct task_class *task, unsigned long complete_data)$/;"	f
+tasklet_remove	wake_latency.c	/^int tasklet_remove(struct task_class *task)$/;"	f
+test	wake_latency.h	/^	struct latency_test_class test;$/;"	m	struct:latency_device	typeref:struct:latency_device::latency_test_class
+test_entry	wl_test.c	/^struct test_entry {$/;"	s	file:
+test_result	wake_latency_device.h	/^struct test_result {$/;"	s
+test_start_type	wake_latency_device.h	/^enum test_start_type {$/;"	g
+test_trace_entry	wake_latency.h	/^struct test_trace_entry {$/;"	s
+tests	wl_test.c	/^static struct test_entry tests[] = {$/;"	v	typeref:struct:test_entry	file:
+th	wl_test.c	/^	pthread_t th;$/;"	m	struct:cpu_load_item	file:
+th_attr_background	wl_test.c	/^static pthread_attr_t th_attr_background, th_attr_work;$/;"	v	file:
+th_attr_work	wl_test.c	/^static pthread_attr_t th_attr_background, th_attr_work;$/;"	v	file:
+thread	wake_latency.c	/^	struct task_struct *thread;$/;"	m	struct:kthread_data_s	typeref:struct:kthread_data_s::task_struct	file:
+thread_print_priority	wl_test.c	/^void thread_print_priority(const char *name, int sched_policy, int priority)$/;"	f
+trace	wake_latency.h	/^	struct test_trace_entry *trace;$/;"	m	struct:latency_test_class	typeref:struct:latency_test_class::test_trace_entry
+user_thread	wl_test.c	/^pthread_t user_thread;$/;"	v
+var	wake_latency_device.h	/^	uint64_t var; 		\/* sqr of std. dev. *\/$/;"	m	struct:test_result
+verbose	wl_test.c	/^static const int verbose = 1; \/* 0 or 1, for verbose run info *\/$/;"	v	file:
+wait_invoke	wl_test.c	/^sem_t wait_invoke, done_exec;$/;"	v
+waitq	wake_latency.c	/^	wait_queue_head_t waitq;$/;"	m	struct:kthread_data_s	file:
+wl_cleanup	wake_latency.c	/^module_exit(wl_cleanup);$/;"	v
+wl_cleanup	wake_latency.c	/^void __exit wl_cleanup(void)$/;"	f
+wl_fops	wake_latency.c	/^struct file_operations wl_fops = {$/;"	v	typeref:struct:file_operations
+wl_gen_results	wake_latency.c	/^static int wl_gen_results(struct latency_test_class *test,$/;"	f	file:
+wl_init	wake_latency.c	/^int __init wl_init(void)$/;"	f
+wl_init	wake_latency.c	/^module_init(wl_init);$/;"	v
+wl_init_test	wake_latency.c	/^static int wl_init_test(struct latency_device *dev)$/;"	f	file:
+wl_ioctl	wake_latency.c	/^int wl_ioctl(struct inode *inode, struct file *filp, unsigned int cmd, unsigned long arg)$/;"	f
+wl_open	wake_latency.c	/^static int wl_open(struct inode *inode, struct file *filp)$/;"	f	file:
+wl_release	wake_latency.c	/^static int wl_release(struct inode *inode, struct file *filp)$/;"	f	file:
+wl_setup_cdev	wake_latency.c	/^static void wl_setup_cdev(struct latency_device *dev, dev_t devno)$/;"	f	file:
+wl_test_complete	wake_latency.c	/^static void wl_test_complete(unsigned long data)$/;"	f	file:
+wl_test_destroy_trace	wake_latency.c	/^static int wl_test_destroy_trace(struct latency_test_class *test)$/;"	f	file:
+wl_test_init_trace	wake_latency.c	/^static int wl_test_init_trace(struct latency_test_class *test)$/;"	f	file:
+wl_test_run	wake_latency.c	/^static int wl_test_run(struct latency_test_class *test,$/;"	f	file:
+wl_test_run_process	wake_latency.c	/^static int wl_test_run_process(struct latency_test_class *test,$/;"	f	file:
+wl_wait_for_test_complete	wake_latency.c	/^static void wl_wait_for_test_complete(struct task_class *task)$/;"	f	file:
+work	wake_latency.c	/^	struct work_struct work;$/;"	m	struct:work_data_s	typeref:struct:work_data_s::work_struct	file:
+work_data	wake_latency.c	/^} work_data;$/;"	v	typeref:struct:work_data_s	file:
+work_data_s	wake_latency.c	/^static struct work_data_s {$/;"	s	file:
+work_func	wake_latency.c	/^static void work_func(struct work_struct *work)$/;"	f	file:
+work_init	wake_latency.c	/^int work_init(struct task_class *task, void (*complete)(unsigned long))$/;"	f
+work_invoke	wake_latency.c	/^int work_invoke(struct task_class *task, unsigned long complete_data)$/;"	f
+work_q	wake_latency.c	/^	struct workqueue_struct *work_q;$/;"	m	struct:work_data_s	typeref:struct:work_data_s::workqueue_struct	file:
+work_remove	wake_latency.c	/^int work_remove(struct task_class *task)$/;"	f

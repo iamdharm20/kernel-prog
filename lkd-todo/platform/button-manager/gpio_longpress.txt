@@ -1,0 +1,19 @@
+Reset driver bindings:
+
+Required properties:
+compatible            : Must be "switch40x-gpios"
+Optional properties:
+name                  : Name of gpios. e.g. button1-gpio
+gpio_a & gpio_b       : GPIO bank to use to EN pin.
+			see Documentation/devicetree/bindings/gpio/gpio.txt
+led-sources           : List of enabled channels.
+			See Documentation/devicetree/bindings/leds/common.txt
+Example:
+
+switch: switch-sw40x {
+		compatible = "switch40x-gpios";
+		button1-gpio = <&gpio_a 30 0>;
+		led1-gpio = <&gpio_a 28 0>;
+		button2-gpio = <&gpio_b 0 0>;
+		led2-gpio = <&gpio_b 6 0>;
+	};

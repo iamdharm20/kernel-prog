@@ -1,0 +1,3 @@
+insmod mmap_kernel.ko
+gcc mmap_user.c
+mount -t debugfs nodev

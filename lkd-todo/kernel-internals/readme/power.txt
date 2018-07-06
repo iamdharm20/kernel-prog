@@ -1,0 +1,87 @@
+cpufreq:
+The cpufreq stack manages the runtime power management for the CPU.
+the embedded platform do not have a mechnism to change volatge but "on-demnad" governor
+change the cpufreq based on load.
+
+Dynamic Tick / clockevent:
+clock framework:
+
+Governor:Dynamic voltage and frequency scaling, or DVFS:
+The following governors are available within the kernel:
+ondemand: This governor samples the load of the cpu and scales it up aggressively 
+	in order to provide the proper amount of processing power.
+conservative: This governor is similar to ondemand but uses a less aggressive method of increasing the the OPP of the MPU.
+performance: This governor statically sets the OPP of the MPU to the highest possible frequency.
+powersave: This governor statically sets the OPP of the MPU to the lowest possible frequency.
+userspace: This governor allows the user to set the desired OPP using any value found within 
+	scaling_available_frequencies by echoing it into scaling_setspeed.
+Documentation/cpu-freq/governors.txt
+
+PMIC Power Management Integrated Circuit:
+1. handles the power sequence of the board,
+2. supplies power to the different components inside the board,
+3. protects the board from unsupported overvoltage and undervoltage,
+4. might handle different external power supplies,
+5. can provide other misc features (GPIO, ADC, ...),
+6. is usually software-controllable (often as an i2c device),
+
+Note: Run time power consumption can be reduced by lowering voltage and frequency
+
+PM events: 
+1. poweroff
+2. reboot
+3. halt
+4. suspend
+5. hibernate
+6. hybrid-sleep
+7. lock or kexec.
+
+PM core:
+1. Oversees the PM of all the kernel sub-systems 
+2. Keeps track of the device tree for PM 
+3. Can communicate with the low level drivers, using driver callbacks 
+4. Resume all the devices based on wake up events
+5. Freeze the user space in system sleep. 
+6. Maintains pm work queue for devices 
+7. Exports helper functions which can be used by device drivers.
+8. Will take care of the latencies
+
+Device Driver:
+1. Implements the framework callbacks viz. suspend and resume.
+2. Saves the context of the device before suspension. 
+3. Drivers can communicate with the PM core using helper functions.
+4. Sleeping and Waking up the devices based on the needs of PM core.
+5. Handling of the hardware wakeup events if supported.  
+6. Enabling and disabling of the device interrupts as per PM states.
+7. Complete all the I/Os on the device before suspension
+
+There are two types of Power Management frameworks, System sleep and Runtime sleep.
+As part of the System sleep framework, whole system is suspended or put into low power mode. 
+In Runtime sleep framework only the device under consideration is suspended or put into low power state
+
+System sleep rules
+1. Complete system is suspended to RAM
+2. User space initiates system sleep
+3. User space is frozen as a result of system sleep
+4. System is suspended to the lowest power state
+5. System suspend can happen at any time
+6. Contents of the RAM are preserved during system sleep.
+
+Runtime sleep rules
+1. Only the device in consideration gets suspended.
+2. Runtime suspend/resume are transparent to the user space.
+3. User space is functional.
+4. Runtime suspend is opportunistic.
+
+Remote wakeup:
+“Remote wakeup” is a mechanism by which suspended devices signal that they should be resumed 
+because of an external event possibly requiring attention.
+
+Examples of remote wake up events
+ 1. Key press on keyboard
+ 2. Touch on touchscreen
+ 3. Pressing power button
+ 4. Media (SD/MMC) insertion
+ 5. LAN wake up packet
+ 6. USB media insertion in hub
+

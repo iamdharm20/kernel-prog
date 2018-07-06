@@ -1,0 +1,17 @@
+http://devarea.com/understanding-linux-kernel-preemption/#.WyjzOhx9jMo
+
+No Forced Preemption
+
+The context switch is done only when we return from the kernel. Lets take an example :
+
+    We have 2 threads – one with high real time priority(50) and the other with low RT priority(30)
+    The high priority thread went to sleep for 3 seconds
+    The low priority threads calls a kernel code that last for 5 seconds
+    After 5 seconds the low priority thread returns from the kernel
+    The high priority thread will wake up (2 seconds late)
+
+
+    The high priority goes to sleep for 3 seconds.
+    The low priority thread is sleeping for one second and then calls the kernel
+    The high priority is wake after 6 seconds:
+

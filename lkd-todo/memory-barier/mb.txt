@@ -1,0 +1,6 @@
+https://www.kernel.org/doc/Documentation/memory-barriers.txt
+
+http://billauer.co.il/blog/2014/08/wmb-rmb-mmiomb-effects/
+objdump -d mb.ko
+readelf -r mb.ko
+

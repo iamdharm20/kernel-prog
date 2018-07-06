@@ -1,0 +1,4 @@
+1. gcc -Wall -c reg_callback.c
+2. ar -cvq libcallback.a *.o
+3. gcc -o callback.out callback.c libcallback.a
+4. ./callback.out

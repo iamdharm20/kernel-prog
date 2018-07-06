@@ -1,0 +1,132 @@
+Linux GPIO Library API
+
+#include <linux/gpio.h>
+* If the following APIs do not have special prompts, the default return value 0 indicates successful execution, negative values ​​indicate errors
+
+- 1.GPIO Request
+    int gpio_request(unsigned gpio, const char *label)  
+	gpio_request(24, "gpio-24");  
+	if (r < 0)  
+	    return -EINVAL;
+Apply for a single GPIO while configuring the GPIO
+    int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)  
+	gpio_request_one(25, GPIOF_DIR_IN | GPIOF_INIT_HIGH, "my-gpio");  
+	if (r < 0)  
+	    return -EINVAL;  
+Unlike gpio_request, gpio_request_one allows users to request and set GPIOs via the flag parameter.
+Flag can be: gpio.h
+GPIOF_OPEN_DRAIN
+GPIOF_OPEN_SOURCE
+GPIOF_DIR_IN
+GPIOF_INIT_HIGH
+GPIOF_EXPORT_CHANGEABLE
+
+Apply for a group of GPIOs
+    int gpio_request_array(const struct gpio *array, size_t num)  
+    const struct gpio[] = {  
+    {  
+        .gpio = 26,  
+        .flag = 0,  
+        .label = "gpio-clk",  
+    }, {  
+        .gpio = 27,  
+        .flag = GPIOF_OPEN_DRAIN,  
+        .label = "gpio-cc",  
+    }  
+    };  
+    r = gpio_request_array(gpio, ARRAY_SIZE(gpio));  
+    if (r < 0)  
+        return r;  
+
+Corresponding freeAPI
+    void gpio_free(unsigned gpio)  
+    gpio_free_array(const struct gpio *array, size_t num)  
+
+
+
+- 2.GPIO Input and output settings
+
+Read GPIO level status
+    int gpio_get_value(unsigned int gpio)  
+
+Set GPIO level state hi/lo
+    void gpio_set_value(unsigned int gpio, int value)  
+
+Set GPIO as input and output state
+    int gpio_direction_input(unsigned gpio)  
+    int gpio_direction_output(unsigned gpio, int value)  
+
+Set GPIO debounce parameters, debounce unit ms
+    int gpio_set_debounce(unsigned gpio, unsigned debounce)  
+
+Conversion of GPIO number to IRQ number
+    int gpio_to_irq(unsigned int gpio) 
+
+Conversion of IRQ number to GPIO number
+    int irq_to_gpio(unsigned int irq)  
+
+Determine if GPIO is valid
+    bool gpio_is_valid(int number) 
+	True - GPIO is valid
+	Flase - GPIO is invalid
+
+- 3.API for mesource managed device
+GPIOs using these APIs do not require the caller to be free. When the driver is detached from the device, the GPIO will be
+Automatic free. The caller needs to provide additional dev parameter, in addition to the above, the same as the API usage of the same name described above.
+
+    int devm_gpio_request(struct device *dev, unsigned gpio, const char *label);  
+    int devm_gpio_request_one(struct device *dev, unsigned gpio,  
+     unsigned long flags, const char *label);  
+    void devm_gpio_free(struct device *dev, unsigned int gpio);  
+
+- 4.Debug GPIO
+View gpio status through sysfs
+Cat /sys/kernel/debug/gpio
+
+gpio-sample.c
+
+#include <linux/gpio.h>  
+#include <linux/device.h>  
+  
+#define GPIO_SCL 15  
+#define GPIO_SDA 16  
+#define GPIO_RESET 17  
+#define GPIO_IRQ 14  
+  
+static int gpio_sample(struct device *dev)  
+{  
+    int r, irq;  
+  
+    r = devm_gpio_request_one(dev,  
+        GPIO_SCL, GPIOF_INIT_HIGH, "scl");  
+    if (r < 0)  
+        return r;  
+  
+    r = devm_gpio_request_one(dev,  
+        GPIO_SDA, GPIOF_INIT_HIGH, "sda");  
+    if (r < 0)  
+        return r;  
+  
+    r = devm_gpio_request(dev, GPIO_RESET, "reset");  
+    if (r < 0)  
+        return r;  
+    gpio_direction_output(GPIO_RESET, 1);  
+  
+    r = devm_gpio_request_one(dev, GPIO_IRQ,  
+        GPIOF_DRI_IN, "irq");  
+    if (r < 0)  
+        return r;  
+  
+    irq = gpio_to_irq(GPIO_IRQ);  
+    printk("IRQ:%d", irq);  
+  
+    // you can request_irq here.  
+    /* do hardware reset */  
+    gpio_set_value(GPIO_RESET, 0);  
+    udelay(10);  
+    gpio_set_value(GPIO_RESET, 1);  
+  
+    return 0;  
+} 
+- 5.Sample Code
+
